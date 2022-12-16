@@ -72,6 +72,13 @@ Merupakan tipe data string yang bisa kita tentukan pilihan - pilihannya [[1]](ht
 - ENUM('Pria', 'Wanita'), artinya hanya bisa menerima data Pria atau Wanita.
 - ENUM('Itachi', 'Kisame', 'Pain'), artinya hanya bisa menerima data Itachi, Kisame atau Pain.
 
+## Tipe Data Date dan Time
+
+Berikut jenis - jenis tipe data date dan time [[1]](https://www.youtube.com/watch?v=xYBclb-sYQ4):
+![tipe data date dan time](/img//date%20and%20time%20data%20type.png)
+
+DATETIME dan TIMESTAMP isinya memang sama tetapi TIMESTAMP biasanya digunakan untuk informasi tambahan seperti keterangan time and date pada created at... atau last updated at... pada file
+
 ## Referensi
 
 - [1][programmer zaman now](https://www.youtube.com/watch?v=xYBclb-sYQ4)
