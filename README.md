@@ -47,6 +47,31 @@ Pada tipe data ini kita bisa menentukan jumlah presisi (jumlah angka dibelakan k
 | DECIMAL(3,1) | -99.9   | 99.9   |
 | DECIMAL(3)   | -999    | 999    |
 
+## Tipe Data String
+
+### CHAR dan VARCHAR
+
+Kita bisa menentukan jumlah panjang maksimal karakter yang bisa ditampung olah CHAR dan VARCHAR dengan menggunakan kurung buka lalu masukkan jumlah maksimal karakter dan akhiri kurung tutup. Misalnya CHAR(10) atau VARCHAR(10) artinya tipe data string yang jumlah karakternya dibatasi sampai 10 karakter. Maksimum ukuran CHAR dan VARCHAR adalah 65535 karakter [[1]](https://www.youtube.com/watch?v=xYBclb-sYQ4).
+
+Berikut perbedaan antara CHAR dan VARCHAR [[1]](https://www.youtube.com/watch?v=xYBclb-sYQ4) :
+![perbedaan CHAR dan VARCHAR](/img/Char%20and%20Varchar.png)
+
+### TEXT
+
+Berbeda dengan CHAR dan VARCHAR pada TEXT ini kita tidak bisa menentukan panjang maksimumnya, TEXT sudah memiliki maksimum panjangnya sendiri. Terdapat 4 tipe data TEXT [[1]](https://www.youtube.com/watch?v=xYBclb-sYQ4):
+
+- TINYTEXT dengan maksimum 255 karakter (~256 bytes)
+- TEXT dengan maksimum 65535 karakter (~64kb)
+- MEDIUMTEXT dengan maksimum 16777215 karakter (~16MB)
+- LONGTEXT dengan maksimum 4294967295 karakter (~4GB)
+
+### ENUM
+
+Merupakan tipe data string yang bisa kita tentukan pilihan - pilihannya [[1]](https://www.youtube.com/watch?v=xYBclb-sYQ4). contohnya:
+
+- ENUM('Pria', 'Wanita'), artinya hanya bisa menerima data Pria atau Wanita.
+- ENUM('Itachi', 'Kisame', 'Pain'), artinya hanya bisa menerima data Itachi, Kisame atau Pain.
+
 ## Referensi
 
 - [1][programmer zaman now](https://www.youtube.com/watch?v=xYBclb-sYQ4)
