@@ -265,6 +265,14 @@ SELECT * FROM barang;
 Hasilnya nanti secara otomatis akan terisi value waktu saat INSERT data, seperti ini: <br>
 ![table after insert 1](/img/tableAfterInsert1.png)
 
+### Menghapus Semua Data Dalam Table
+
+Kita dapat menghapus semua data yang telah di-INSERT sebelumnya sehingga menjad tabel menjadi kosong, menggunakan code:
+
+```
+TRUNCATE nama_tabel
+```
+
 ## Referensi
 
 - [1][programmer zaman now](https://www.youtube.com/watch?v=xYBclb-sYQ4)
