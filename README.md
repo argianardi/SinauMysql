@@ -423,14 +423,75 @@ Misalnya kita hanya ingin mengambil data dengan column yang memiliki value terte
 - Menampilkan value seluruh column pada data yang column price bernilai 25,000 dan column quantity bernilai 100
 
   ```
-  SELECT * FROM products WHERE price = 25000 && quantity  = 100;
+  SELECT * FROM products WHERE price = 25000 AND quantity  = 100;
   ```
 
   Sehingga hasilnya hanya akan menampilkan value semua column pada data yang column price bernilai 25,000 dan column quantity bernilai 100 <br>
   ![tableDataWhere4](/img/tableDataWhere4.png)
+
+## UPDATE
+
+Untuk mengubah data di tabel, kita bisa menggunakan perintah SQL UPDATE [[1]](https://www.youtube.com/watch?v=xYBclb-sYQ4):
+
+- Saat menggunakan SQL UPDATE, kita harus memberi tahu data mana yang akan di update dengan WHERE clause
+- Hati-hati ketika meng-update data di table, jika sampai WHERE clause nya salah, bisa-bisa kita malah meng-update seluruh data di tabel.
+- Untuk update, kita harus beritahu, kolom mana yang akan di update
+
+Untuk contoh kita akan UPDATE value column pada table berikut:<br>
+![tableBeforeUpdate](/img/tableBeforUpdate.png)
+
+- UPDATE value pada satu column <br>
+  kita akan UPDATE value column category pada data yang memiliki id 2 menjadi makanan
+  ```
+  UPDATE products
+  SET category = 'Makanan'
+  WHERE id = 2;
+  ```
+  Sehingga data table products akan berubah seperti ini: <br>
+  ![tabelAfeterUpdate1](/img/tableAfterUpdate1.png)
+- UPDATE value di lebih dari satu column <br>
+  Pada data yang memiliki id 1, kita akan UPDATE value column category menjadi makanan dan column description menjadi Hanya mie ayam.
+
+```
+UPDATE products
+SET category     = 'Makanan',
+	description  = 'Hanya mie ayam'
+WHERE id = 1;
+```
+
+Sehingga data table products akan berubah menjadi seperti ini:<br>
+![table after update2](/img/tableAfterUpdate2.png)
+
+- UPDATE value column di lebih dari satu baris data <br>
+  Kita akan UPDATE value di column category di baris data dengan id = 3 sampai id = 8.
+
+  ```
+  UPDATE products
+  SET category = 'Makanan'
+  WHERE id = 3 OR id = 4 OR id = 5 OR id = 6 OR id = 7 OR id = 8;
+  ```
+
+  Sehingga hasilnya akan jadi seperti ini: <br>
+  ![tabel after update 3](/img/tableAfterUpdate3.png)
+
+- UPDATE value dengan operasi matematika
+  kita akan mengubah value column price pada baris data yang memiliki id = 8 dengan menambahkan 10,000.
+
+  ```
+  UPDATE products
+  SET price = price + 10000
+  WHERE id = 8;
+  ```
+
+  Sehingga value column price di baris data yang memiliki id = 8 terupdate menjadi 27,000. <br>
+  ![table after update4](/img/tableAfterUpdate4.png)
 
 ## Referensi
 
 - [1][programmer zaman now](https://www.youtube.com/watch?v=xYBclb-sYQ4)
 
 [[1]](https://www.youtube.com/watch?v=xYBclb-sYQ4)
+
+```
+
+```
