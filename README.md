@@ -352,16 +352,42 @@ SELECT name, price From products;
 
 Jika kita lihat contoh diatas maka data yang akan terambil hanya data - data yang ada di colom name dan price saja.
 
+## Primary Key
+
+Primary key adalah sebuah kolom yang kita tunjuk sebagai id dari suatu tabel [[1]](https://www.youtube.com/watch?v=xYBclb-sYQ4).
+
+- Primary key adalah identitas untuk tiap baris data di dalam tabel
+- Primary key harus unik, tidak boleh ada data dengan primary key yang sama
+- Kita bisa menunjuk kolom yang akan kita jadikan primary key
+- Kita bisa membuat primary key dengan kombinasi beberapa kolom
+- Namun disarankan untuk tetap menggunakan satu kolom ketika membuat primary key
+  Kecuali ada kasus khusus, seperti membuat tabel yang berelasi MANY TO MANY
+
+Kita bisa membuat primary key pada suatu column saat table baru dibuat, seperti ini:
+
+```
+CREATE TABLE products2 (
+	id 			int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	name 		varchar(100) NOT NULL,
+	description	text,
+	price		int UNSIGNED NOT NULL default 0,
+	quantity 	int UNSIGNED NOT NULL default 0,
+	created_at  TIMESTAMP NOT NULL default CURRENT_TIMESTAMP
+);
+```
+
+Atau jika kita ingin membuat pada suatu column di table yang sudah dibuat sebelumnya, kita bisa memanfaatkan ALTER TABLE:
+
+```
+ALTER TABLE nama_table
+ADD PRIMARY KEY(nama_column);
+```
+
+Hasilnya akan terlihat saat kita menjalankan perintah `DESC nama_table`: <br>
+![table primary key](/img/tablePrimaryKey.png)
+
 ## Referensi
 
 - [1][programmer zaman now](https://www.youtube.com/watch?v=xYBclb-sYQ4)
 
 [[1]](https://www.youtube.com/watch?v=xYBclb-sYQ4)
-
-```
-
-```
-
-```
-
-```
