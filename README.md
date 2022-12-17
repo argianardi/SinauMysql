@@ -350,7 +350,7 @@ Contohnya seperti ini:
 SELECT name, price From products;
 ```
 
-Jika kita lihat contoh diatas maka data yang akan terambil hanya data - data yang ada di colom name dan price saja.
+Jika kita lihat contoh diatas maka data yang akan terambil hanya data - data yang ada di column name dan price saja.
 
 ## Primary Key
 
@@ -385,6 +385,49 @@ ADD PRIMARY KEY(nama_column);
 
 Hasilnya akan terlihat saat kita menjalankan perintah `DESC nama_table`: <br>
 ![table primary key](/img/tablePrimaryKey.png)
+
+## WHERE Clause
+
+WHERE digunakan untuk mengambil data yang salah satu atau beberapa columnnya memiliki value terntentu (value yang kita inginkan) saja. Hal ini bisa kita lakukan dengan WHERE clause setelah perintah SELECT [[1]](https://www.youtube.com/watch?v=xYBclb-sYQ4).
+
+Misalnya kita hanya ingin mengambil data dengan column yang memiliki value tertentu saja dari seluruh value yang ada di column dibawah ini: <br>
+![table all data](/img/tableAllData.png)
+
+- Mengambil value dari seluruh column pada data yang column price-nya bernilai 20,000:
+
+  ```
+  SELECT * FROM products WHERE price = 20000;
+  ```
+
+  sehingga hasilnya hanya akan tampil value dari seluruh column pada data yang column price-nya bernilai 20,000 <br>
+  ![tableDataWhere1](/img/tableDataWhere1.png)
+
+- Mengambil value dari column name, description dan price pada data yang column price-nya bernilai 15,0000:
+
+  ```
+  SELECT name, description, price FROM products WHERE price = 15000;
+  ```
+
+  Sehingga hasilnya hanya akan tampil value dari column name, description, dan price pada data yang column price-nya bernilai 15,000 <br>
+  ![table data where2](/img/tableDataWhere2.png)
+
+- Mengambil value column id pada data yang column quantity-nya berinlai 1,000
+
+  ```
+  SELECT id FROM products WHERE quantity = 1000;
+  ```
+
+  Sehingga hasilnya hanya akan tampil value column id pada data yang column quantity-nya bernilai 1,000 <br>
+  ![tableDataWhere3](/img/tableDataWhere3.png)
+
+- Menampilkan value seluruh column pada data yang column price bernilai 25,000 dan column quantity bernilai 100
+
+  ```
+  SELECT * FROM products WHERE price = 25000 && quantity  = 100;
+  ```
+
+  Sehingga hasilnya hanya akan menampilkan value semua column pada data yang column price bernilai 25,000 dan column quantity bernilai 100 <br>
+  ![tableDataWhere4](/img/tableDataWhere4.png)
 
 ## Referensi
 
