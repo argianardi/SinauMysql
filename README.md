@@ -328,11 +328,39 @@ SELECT * FROM products
 Hasilnya akan tampak seperti gambar dibawah ini: <br>
 ![table insert data](/img/tableInsertData.png)
 
+## SELECT
+
+SELECT bisa digunakan untuk mengambil semua kolom yang ada di tabel, atau sebagian kolom saja. Jika kita ingin mengambil semua kolom, kita bisa gunakan karakter \* (bintang) [[1]](https://www.youtube.com/watch?v=xYBclb-sYQ4).
+
+```
+SELECT * FROM nama_tabel
+```
+
+Artinya kita mengambil data dari semua column di table tersebut.
+
+Jika kita hanya ingin mengambil beberapa kolom saja, kita bisa sebutkan nama-nama kolom yang ingin kita ambil datanya [[1]](https://www.youtube.com/watch?v=xYBclb-sYQ4). Jadinya seperti ini:
+
+```
+SELECT nama_column1, nama_column2, nama_column3, nama_column(ke-n) FROM nama_table
+```
+
+Contohnya seperti ini:
+
+```
+SELECT name, price From products;
+```
+
+Jika kita lihat contoh diatas maka data yang akan terambil hanya data - data yang ada di colom name dan price saja.
+
 ## Referensi
 
 - [1][programmer zaman now](https://www.youtube.com/watch?v=xYBclb-sYQ4)
 
 [[1]](https://www.youtube.com/watch?v=xYBclb-sYQ4)
+
+```
+
+```
 
 ```
 
