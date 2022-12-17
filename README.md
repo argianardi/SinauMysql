@@ -6,13 +6,13 @@ sudo mysql -u root -p
 
 ## Data Base
 
-`create database nama_database` untuk membuat database
+`CREATE DATABASE nama_database` untuk membuat database
 
-`drop database nama_database` untuk menghapus database
+`DROP DATABASE nama_database` untuk menghapus database
 
-`show databases` digunakan menampilkan semua database yang tersimpan di mysql
+`SHOW DATABASES` digunakan menampilkan semua database yang tersimpan di mysql
 
-`use nama_database` digunakan untuk memilih database
+`USE nama_database` digunakan untuk memilih database yang akan di jalankan
 
 ## Tipe Data
 
@@ -98,8 +98,7 @@ Untuk melihat table dapat dilakukan dengan perintah `show tables`.
 ### Membuat Table
 
 ```
-CREATE TABLE barang
-(
+CREATE TABLE barang (
     id     INT,
     nama   VARCHAR (100),
     harga  INT,
@@ -154,11 +153,11 @@ Berikut contoh penggunaannya:
   DROP COLUMN tumbal;
   ```
 
-  Setelah dihapus hasilnya akan seperti ini (column tumbal hilang)
+  Setelah dihapus hasilnya akan seperti ini (column tumbal hilang) <br>
   ![table after delete column](/img/tableAfterDelete.png)
 
 - Modifikasi Column <br>
-  Kita bisa mengubah tipe data dan posisi column di dalam table. Berikut tampilan table barang sebelum column dimodify
+  Kita bisa mengubah tipe data dan posisi column di dalam table. Berikut tampilan table barang sebelum column dimodify <br>
   ![table before modify](/img/tableBeforeModify.png)
 
   Kita akan mengubah tipe data column modify dari varchar(100) jadi integer:
@@ -168,7 +167,7 @@ Berikut contoh penggunaannya:
   MODIFY nama INT;
   ```
 
-  Berikut hasilnya setelah table barang dimodify
+  Berikut hasilnya setelah table barang dimodify: <br>
   ![table after modify 1](/img/tableAfterModify1.png)
 
   Selanjutnya kita akan mengubah struktur table barang yaitu memindahkan posisi column modify di posisi tepat dibawah column harga.
@@ -178,7 +177,7 @@ Berikut contoh penggunaannya:
   MODIFY modify INT AFTER harga
   ```
 
-  Seperti yang terlihat di code diatas walaupun kita hanya merubah posisi columnya saja, tipe data column tetap harus ditulis. Berikut hasilnya:
+  Seperti yang terlihat di code diatas walaupun kita hanya merubah posisi columnya saja, tipe data column tetap harus ditulis. Berikut hasilnya: <br>
   ![table after modify 2](/img/tableAfterModify2.png)
 
   Terlihat column modify berpindah posisi tepat di bawah column harga.
@@ -190,7 +189,7 @@ Berikut contoh penggunaannya:
   MODIFY deskripsi TEXT FIRST;
   ```
 
-  Maka hasilnya akan seperti ini:
+  Maka hasilnya akan seperti ini: <br>
   ![table After modify 3](/img/tableAfterModify3.png)
 
 ### Null Value
@@ -200,8 +199,7 @@ Null adalah nilai ketika kita tidak mengisi data ke dalam kolom. Secara default,
 Kita bisa menambahkan NOT NULL di kolom pada saat membuat tabel seperti ini:
 
 ```
-CREATE TABLE barang
-(
+CREATE TABLE barang (
     id     INT NOT NULL,
     nama   VARCHAR (100),
     harga  INT,
@@ -216,7 +214,7 @@ ALTER TABLE barang
 MODIFY id INT NOT NULL;
 ```
 
-Sehingga hasilnya seperti ini, value Null di id menjadi NO
+Sehingga hasilnya seperti ini, value Null di id menjadi NO <br>
 
 ![table NOt Null](/img/tableNotNull.png)
 
@@ -227,8 +225,7 @@ Ini artinya value pada id tidak boleh null, jadi jika kita memasukkan data dan i
 Saat kita menyimpan data ke dalam tabel, lalu kita hanya menyimpan beberapa kolom (tidak semuanya), kolom yang tidak kita beri nilai secara default nilainya adalah NULL [[1]](https://www.youtube.com/watch?v=xYBclb-sYQ4). Tetapi kita bisa mengatur default value setiap kolom pada tabel yang kita buat menggunakan perintah `DEFAULT value` seperti ini:
 
 ```
-CREATE TABLE barang
-(
+CREATE TABLE barang(
     id     INT NOT NULL DEFAULT 0,
     nama   VARCHAR (100),
     harga  INT NOT NULL DEFAULT 0,
@@ -245,10 +242,28 @@ MODIFY harga INT NOT NULL DEFAULT 0,
 MODIFY jumlah INT NOT NULL DEFAULT 0;
 ```
 
-Sehingga hasilnya akan seperti ini (column deskripsi memiliki default value string kosong, harga dan jumlah memiliki default value 0)
+Sehingga hasilnya akan seperti ini (column deskripsi memiliki default value string kosong, harga dan jumlah memiliki default value 0) <br>
 ![table after modify default value](/img/table%20after%20modify%20default%20value.png)
 
 Khusus tipe data DATETIME atau TIMESTAMP, jika kita ingin menggunakan default value dengan nilai waktu saat ini, kita bisa gunakan kata kunci CURRENT_TIMESTAMP
+
+```
+ALTER TABLE barang
+ADD waktu_dibuat TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP;
+```
+
+Maka hasilnya akan seperti ini; <br>
+![table default timestamp](/img/tableDefaultValueTimesTamp.png)
+
+Sehingga saat kita INSERT data pada column waktu_dibuat:
+
+```
+INSERT INTO barang (deskripsi, id, nama) VALUES ('good', 1, 'Apel');
+SELECT * FROM barang;
+```
+
+Hasilnya nanti secara otomatis akan terisi value waktu saat INSERT data, seperti ini: <br>
+![table after insert 1](/img/tableAfterInsert1.png)
 
 ## Referensi
 
