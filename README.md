@@ -1,3 +1,9 @@
+Untuk menjalankan mysql di CLI jalankan code ini:
+
+```
+sudo mysql -u root -p
+```
+
 ## Data Base
 
 `create database nama_database` untuk membuat database
@@ -101,6 +107,10 @@ CREATE TABLE barang
 ) ENGINE = InnoDB;
 ```
 
+### Menghapus Table
+
+`DROP TABLE nama_table` menghapus table
+
 ### Melihat Struktur Tabel
 
 Untuk melihat struktur tabel (kolom dan tipe data kolom) dapat dilakukan dengan code `describe nama_tabel` atau bisa disingkat dengan `desc nama_tabel`
@@ -149,7 +159,7 @@ Berikut contoh penggunaannya:
 
 - Modifikasi Column <br>
   Kita bisa mengubah tipe data dan posisi column di dalam table. Berikut tampilan table barang sebelum column dimodify
-  ![table before modify]()
+  ![table before modify](/img/tableBeforeModify.png)
 
   Kita akan mengubah tipe data column modify dari varchar(100) jadi integer:
 
@@ -159,7 +169,7 @@ Berikut contoh penggunaannya:
   ```
 
   Berikut hasilnya setelah table barang dimodify
-  ![table after modify 1](https://)
+  ![table after modify 1](/img/tableAfterModify1.png)
 
   Selanjutnya kita akan mengubah struktur table barang yaitu memindahkan posisi column modify di posisi tepat dibawah column harga.
 
@@ -169,7 +179,7 @@ Berikut contoh penggunaannya:
   ```
 
   Seperti yang terlihat di code diatas walaupun kita hanya merubah posisi columnya saja, tipe data column tetap harus ditulis. Berikut hasilnya:
-  ![table after modify 2](https://)
+  ![table after modify 2](/img/tableAfterModify2.png)
 
   Terlihat column modify berpindah posisi tepat di bawah column harga.
 
@@ -181,7 +191,7 @@ Berikut contoh penggunaannya:
   ```
 
   Maka hasilnya akan seperti ini:
-  ![table After modify 3](https://)
+  ![table After modify 3](/img/tableAfterModify3.png)
 
 ### Null Value
 
@@ -208,7 +218,7 @@ MODIFY id INT NOT NULL;
 
 Sehingga hasilnya seperti ini, value Null di id menjadi NO
 
-![table NOt Null]()
+![table NOt Null](/img/tableNotNull.png)
 
 Ini artinya value pada id tidak boleh null, jadi jika kita memasukkan data dan id-nya tidak di-set datanya maka dia akan ditolak
 
@@ -236,11 +246,9 @@ MODIFY jumlah INT NOT NULL DEFAULT 0;
 ```
 
 Sehingga hasilnya akan seperti ini (column deskripsi memiliki default value string kosong, harga dan jumlah memiliki default value 0)
-![table after modify default value](https://)
+![table after modify default value](/img/table%20after%20modify%20default%20value.png)
 
 Khusus tipe data DATETIME atau TIMESTAMP, jika kita ingin menggunakan default value dengan nilai waktu saat ini, kita bisa gunakan kata kunci CURRENT_TIMESTAMP
-
-sudo mysql -u root -p
 
 ## Referensi
 
