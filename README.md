@@ -99,10 +99,10 @@ Untuk melihat table dapat dilakukan dengan perintah `show tables`.
 
 ```
 CREATE TABLE barang (
-    id     INT,
-    nama   VARCHAR (100),
-    harga  INT,
-    jumlah INT
+    id     int,
+    nama   varcaher(100),
+    harga  int,
+    jumlah int
 ) ENGINE = InnoDB;
 ```
 
@@ -200,10 +200,10 @@ Kita bisa menambahkan NOT NULL di kolom pada saat membuat tabel seperti ini:
 
 ```
 CREATE TABLE barang (
-    id     INT NOT NULL,
-    nama   VARCHAR (100),
-    harga  INT,
-    jumlah INT
+    id     int NOT NULL,
+    nama   varchar(100),
+    harga  int,
+    jumlah int
 ) ENGINE = InnoDB;
 ```
 
@@ -226,10 +226,10 @@ Saat kita menyimpan data ke dalam tabel, lalu kita hanya menyimpan beberapa kolo
 
 ```
 CREATE TABLE barang(
-    id     INT NOT NULL DEFAULT 0,
-    nama   VARCHAR (100),
-    harga  INT NOT NULL DEFAULT 0,
-    jumlah INT NOT NULL DEFAULT 0
+    id     int NOT NULL DEFAULT 0,
+    nama   varchar(100),
+    harga  int NOT NULL DEFAULT 0,
+    jumlah int NOT NULL DEFAULT 0
 ) ENGINE = InnoDB;
 ```
 
@@ -273,8 +273,67 @@ Kita dapat menghapus semua data yang telah di-INSERT sebelumnya sehingga menjad 
 TRUNCATE nama_tabel
 ```
 
+## INSERT
+
+Kita bisa menyebutkan kolom mana yang ingin kita isi, jika kita tidak menyebutkan kolom nya, artinya kolom tersebut tidak akan kita isi, dan secara otomatis kolom yang tidak kita isi, nilainya akan NULL, kecuali memiliki DEFAULT VALUE [[1]](https://www.youtube.com/watch?v=xYBclb-sYQ4). Sebalum melakukan INSERT kita harus menyiapkan tabel terlebih dahulu, Berikut kitak akan membuat table products
+
+```
+CREATE TABLE products (
+	id 			    int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	name 		    varchar(100) NOT NULL,
+	description	text,
+	price		    int UNSIGNED NOT NULL default 0,
+	quantity 	  int UNSIGNED NOT NULL default 0,
+	created_at  TIMESTAMP NOT NULL default CURRENT_TIMESTAMP
+);
+```
+
+- AUTO_INCREMENT artinya value id nanti akan otomatis bertambah setiap kita melakaukan INSERT data, penggunannya harus disandingkan dengan PRIMARY KEY jika tidak maka CREATE TABLE akan error.
+- UNSIGEND artinya value tidak boleh bernilai negatif
+
+Selanjutnya baru kita melakukan INSERT dengan format code:
+
+```
+INSERT INTO nama_tabel (nama_column) VALUES (value)
+```
+
+Contohnya seperti ini:
+
+```
+INSERT INTO products(name, price, quantity)
+VALUES('Mie Ayam Original', 15000, 100);
+```
+
+Kita juga bisa INSERT lebih dari satu data secara bersamaan:
+
+```
+INSERT INTO products(name, price, description, quantity)
+VALUES 	('Mie Ayam Spesial', 25000, 'Mie dan bakso berkualitas', 100),
+		('Mie Ayam Ceker', 30000, 'Mie + bakso + ceker', 100),
+		('Mie Ayam Spesial', 25000, 'Mie dan bakso berkualitas', 100);
+```
+
+Untuk melihat hasilnya kita bisa menggunakan perintah SELECT:
+
+```
+SELECT * FROM nama_tabel
+```
+
+Sehingga untuk melihat hasil dicontoh akan seperti ini:
+
+```
+SELECT * FROM products
+```
+
+Hasilnya akan tampak seperti gambar dibawah ini: <br>
+![table insert data](/img/tableInsertData.png)
+
 ## Referensi
 
 - [1][programmer zaman now](https://www.youtube.com/watch?v=xYBclb-sYQ4)
 
 [[1]](https://www.youtube.com/watch?v=xYBclb-sYQ4)
+
+```
+
+```
