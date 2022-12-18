@@ -521,11 +521,11 @@ Misalnya kita akan SELECT data menggunakan ALIAS pada table products yang tampil
 ![table before alias](/img/tableBeforeAlias.png)
 
 ```
-SELECT 	id			as 'Kode',
-		name		as 'Nama',
-		category	as	'Kategori',
-		price		as	'Harga',
-		quantity	as	'Stok'
+SELECT  id        AS  'Kode',
+        name      AS  'Nama',
+        category  AS  'Kategori',
+        price     AS  'Harga',
+        quantity  AS  'Stok'
 FROM products;
 ```
 
@@ -535,18 +535,286 @@ Setelah menerapkan alias tampilan nama column akan tampak seperti ini: <br>
 ### ALIAS untuk Table
 
 ```
-SELECT 	p.id 		AS 	'Kode',
-		p.name		AS 	'Nama',
-		p.category 	AS	'Kategori',
-		p.price		AS	'Harga',
-		p.quantity	AS	'Stok'
+SELECT  p.id        AS  'Kode',
+        p.name      AS  'Nama',
+        p.category  AS  'Kategori',
+        p.price     AS  'Harga',
+        p.quantity  AS  'Stok'
 FROM products AS p;
 ```
 
 Hasilnya sama seperti ALIAS pada column diatas.
+
+## WHERE Operator
+
+### Operator Perbandingan
+
+Berikut Operator yang bisa kita gunakan untuk WHERE Operator saat melakukan SELECT, UPDATE ataupun DELETE.
+| Operator | Keterangan |
+| --------- | --------- |
+| <> atau != | sama dengan |
+| < | kurang dari |
+| <= | kurang dari atau sama dengan |
+| > | lebih dari |
+| >= | lebih dari atau sama dengan |
+
+Kita dapat menggunakan operator penbandingan pada WHERE operator dengan format berikut: <br>
+
+```
+WHERE nama_column operator value;
+```
+
+Misalnya kita ingin mengambil beberapa value baris data dari table data berikut ini <br>
+![table all data](/img/tableAllData.png)
+
+- Menampilkan baris data yang column quantity-nya lebih besar dari 100
+
+  ```
+  SELECT * FROM products WHERE quantity > 300;
+  ```
+
+  Sehingga hasilnya hanya akan menampilkan baris data yang column quantity-nya bernilai diatas 300. <br>
+  ![tableAfterWhere1](/img/tableAfterWhere1.png)
+
+- Menampilkan value column name dan price dari baris data yang column category-nya bernilai bukan makanan
+  ```
+  SELECT name, price FROM products WHERE category != 'Makanan';
+  ```
+  Sehingga hasilnya hanya akan menampilkan value column name dan price pada baris data yang value column category-nya bukan makanan.<br>
+  ![table after where 2](/img/tableAfterWhere2.png)
+
+### AND dan OR operator
+
+Kedua operator ini digunakan untuk mendapatkan data dangan dua kondisi. Berikut format codenya:
+
+```
+WHERE kondisi1 AND/OR kondisi2
+```
+
+Misalnya dengan syarat kondisi tertentu kita ingin mengambil data dari table berikut: <br>
+![table all data](/img/tableAllData.png)
+
+#### Operator AND
+
+- Menampilkan value dari baris data yang column category-ny bernilai makanan dan column price bernilai diatas 20,000
+
+```
+SELECT * FROM products WHERE category = 'makanan' AND price > 20000;
+```
+
+Sehingga hasilnya hanya akan menampilkan value dari table data yang column category-nya bernilai makanan dan column price-nya bernilai lebih dari 20,000
+![table after where 3](/img/tableAfterWhere3.png)
+
+- Menampilkan value dari baris data yang columnnya memiliki value dengan interval yang kita tentukan.
+
+  ```
+  SELECT * FROM products WHERE price >10000 AND price < 20000;
+  ```
+
+  Hasilnya hanya menampilkan baris data yang value column price-nya bernilai lebih besar dari 10,000 dan lebih kecil dari 20,000.<br>
+  ![table after where 5](/img/tableAfterWhere5.png)
+
+#### Operator OR
+
+- Menampilkan value dari baris data yang salah satu column quantity-nya bernilai lebih besar dari 100 atau column price-nya bernilai lebih besar dari 20,000.
+
+  ```
+  SELECT * FROM products WHERE quantity > 100 OR price > 20000;
+  ```
+
+  Sehingga hasilnya hanya akan menampilkan baris data yang memenuhi salah satu dari dua kodisi, yang column quantity-nya bernilai lebih dari 100 atau column price-nya bernilai lebih dari 20,000. <br>
+  ![table after where 4](/img/tableAfterWhere4.png)
+
+### Prioritas dengan Kurung()
+
+Untuk memahaminya kita langsung lihat contoh code berikut:
+
+```
+SELECT * FROM products WHERE category = 'Makanan' OR quantity > 500 AND price > 20000
+```
+
+Pada code secara default parbandingan yang akan dieksekusi dahulu adalah oprator AND barus setelah itu dieksekusi dengan perbandingan OR seperti ini:
+
+```
+SELECT * FROM products WHERE category  = 'Makanan' OR (quantity > 500 AND price > 20000);
+```
+
+Tetapi kita bisa menentukan prioritas eksekusinya menggunakan kurung() seperti ini:
+
+```
+ SELECT * FROM products WHERE (category = 'makanan' OR quantity > 500) AND price > 20000;
+```
+
+Sehingga yang akan dieksesekusi lebih dulu adalah perbandingan operator OR baru dilanjutkan dengan eksekusi perbandingan operator AND.
+
+### Operator LIKE
+
+LIKE operator adalah operator yang bisa kita gunakan untuk mencari sebagian data dalam String [[1]](https://www.youtube.com/watch?v=xYBclb-sYQ4):
+
+- Ini cocok sekali ketika kita hanya ingin mencari sebagian kata dalam String.
+- Namun perlu diingat, operasi LIKE itu sangat lambat, oleh karena itu, tidak disarankan jika datanya sudah terlalu besar di tabel.
+- Operasi LIKE tidak case sensitive, jadi huruf besar dan kecil tidak akan berpengaruh.
+
+Berikut contoh cara penggunaan operator LIKE:
+
+- LIKE 'm%' <br>
+  Digunakan untuk mencari string yang berawalan m.
+  ```
+  SELECT * FROM products WHERE name LIKE 'm%';
+  ```
+  Sehingga hanya akan menampilkan baris data yang value column name-nya berawalan 'm'.
+- LIKE '%m' <br>
+  Digunakan untuk menampilkan string yang berakhiran 'm'
+  ```
+  SELECT * FROM products WHERE name LIKE '%m';
+  ```
+  Hasilnya hanya menampilkan baris data yang value column name-nya berakhiran 'm.
+- LIKE '%ayam%' <br>
+  Digunakan untuk menampilkan string yang di dalamnya terdapat 'ayam'
+  ```
+  SELECT * FROM products WHERE name LIKE '%ayam%';
+  ```
+  Hasilnya hanya akan menamilkan baris data yang value column name-nya terdapat string 'ayam'.
+- NOT LIKE '%ayam%'<br>
+  Digunakan untuk menampilkan baris data yang value column yang dirujuk tidak berisi string yang terdapat kata 'ayam'
+  ```
+  SELECT * FROM products WHERE name NOT LIKE '%ayam%';
+  ```
+  Hasilnya hanya menampilkan baris data yang value column name-nya tidak berisi string 'ayam'
+
+### NULL Operator
+
+Untuk mencari data yang berisi NULL, kita tidak bisa menggunakan operator perbandingan = NULL [[1]](https://www.youtube.com/watch?v=xYBclb-sYQ4):
+
+- Ada operator khusus untuk mencari data NULL, yaitu menggunakan NULL operator
+- IS NULL, artinya mencari value yang NULL
+- IS NOT NULL, artinya mencari value yang tidak NULL
+  Berikut format codenya:
+
+```
+SELECT * FROM nama_table WHERE nama_column IS NULL;
+```
+
+Misalnya,
+
+```
+SELECT * FROM products WHERE description IS NULL;
+```
+
+Hasilnya hanya akan menampilkan baris data yang column descriptionnya bernilai NULL.
+
+```
+SELECT * FROM nama_table WHERE nama_column IS NOT NULL
+```
+
+Misalnya,
+
+```
+SELECT * FROM products WHERE description IS NOT NULL;
+```
+
+Hasilnya hanya akan menampilkan baris data yang column description-nya bernilai NOT NULL
+
+### BETWEEN Operator
+
+Kadang kita ingin mencari data yang valuenya berada di interval angka terentu misalnya yang value column price antara 10,000 sampai 20,000 [[1]](https://www.youtube.com/watch?v=xYBclb-sYQ4):
+
+- Untuk melakukan ini, kita bisa menggunakan WHERE price >= 10000 AND price <= 20000
+- Namun ada operator BETWEEN yang bisa kita gunakan agar lebih sederhana
+- Untuk kebalikannya, kita bisa gunakan NOT BETWEEN
+
+Berikut format code-nya:
+
+```
+SELECT * FROM nama_table WHERE nama_column BETWEEN nilai_awal(number) AND nilai_akhir(number);
+```
+
+Misalnya,
+
+```
+SELECT * FROM products WHERE price BETWEEN 10000 AND 15000;
+```
+
+Hasilnya hanya akan menampilkan baris data yang column price-nya berada diantara interval 10,000 dan 15,000.
+
+```
+SELECT * FROM nama_table WHERE nama_column NOT BETWEEN nilai_awal(number) AND nilai_akhir(number);
+```
+
+Misalnya,
+
+```
+SELECT * FROM products WHERE price NOT BETWEEN 10000 AND 25000;
+```
+
+Hasilnya hanya akan menampilkan baris data yang column pricenya bernilai tidak diinterval 10,000 dan 25,000.
+
+### IN Operator
+
+Digunakan untuk melakukan pencarian sebuah kolom dengan beberapa nilai. Misal kita ingin mencari products dengan category Makanan atau Minuman, maka kita bisa menggunakan operator IN [[1]](https://www.youtube.com/watch?v=xYBclb-sYQ4).
+
+- Pencarian berdasarkan satu value referensi <br>
+  Berikut format codenya:
+
+  ```
+  WHERE nama_column IN (value_referensi)
+  ```
+
+  Misalnya,
+
+  ```
+  SELECT \* FROM products WHERE category IN ('Makanan');
+  ```
+
+  Hasilnya hanya akan menampilkan baris data yang column category-nya bernilai 'Makanan'.
+
+- Pencarian berdasarkan lebih dari satu value referensi <br>
+  Berikut format code-nya:
+
+  ```
+  WHERE nama_column IN (value1_referensi1, value_referensi2, value_referensi3)
+  ```
+
+  Misalnya,
+
+  ```
+  SELECT * FROM products WHERE category IN ('makanan', 'lain-lain');
+  ```
+
+  Hasilnya akan menampilkan baris data yang column category-nya bernilai 'makanan' atau 'lain - lain'. Jadi operator IN ini bisa menggantikan operator OR yang code-nya seperti ini:
+
+  ```
+  SELECT * FROM products WHERE category = 'makanan' OR category = 'lain-lain';
+  ```
+
+  - Pencarian untuk value column yang tidak ada di value referensi <br>
+    Berikut format code-nya:
+
+  ```
+  WHERE nama_category NOT IN (valui_referensi1, value_referensi2, value_referensi3)
+  ```
+
+  Misalnya,
+
+  ```
+  SELECT * FROM products WHERE category NOT IN ('makanan', 'lain - lain');
+  ```
+
+  Hasilnya hanya akan menampilkan baris data yang column category-nya bernilai selain 'makanan' dan 'lain - lain'.
+
+### Order By Clause
+
+Untuk mengurutkan data ketika kita menggunakan perintah SQL SELECT, kita bisa menambahkan ORDER BY clause [[1]](https://www.youtube.com/watch?v=xYBclb-sYQ4):
+
+- ORDER BY clause digunakan untuk mengurutkan data berdasarkan kolom yang dipilih, dan jenis urutan (ASC atau DESC)
+- Kita juga bisa mengurutkan tidak hanya terhadap satu kolom, tapi beberapa kolom
 
 ## Referensi
 
 - [1] [programmer zaman now](https://www.youtube.com/watch?v=xYBclb-sYQ4)
 
 [[1]](https://www.youtube.com/watch?v=xYBclb-sYQ4)
+
+```
+
+```
