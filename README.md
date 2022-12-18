@@ -488,8 +488,8 @@ Sehingga data table products akan berubah menjadi seperti ini:<br>
 
 ## DELETE
 
-Untuk menghapus data di table, kita bisa menggunakan perintah SQL DELETE
-Perintah SQL DELETE sama seperti UPDATE, kita perlu memberi tahu data mana yang akan di hapus dengan WHERE clause.Hati-hati, jangan sampai salah menentukan WHERE clause, karena jika salah, bisa-bisa kita akan menghapus seluruh data di table [[1]](https://www.youtube.com/watch?v=xYBclb-sYQ4).
+Untuk menghapus data di table, kita bisa menggunakan perintah SQL DELETE.
+Perintah SQL DELETE sama seperti UPDATE, kita perlu memberi tahu data mana yang akan di hapus dengan WHERE clause. Hati-hati, jangan sampai salah menentukan WHERE clause, karena jika salah, bisa-bisa kita akan menghapus seluruh data di table [[1]](https://www.youtube.com/watch?v=xYBclb-sYQ4).
 
 Berikut format codenya:
 
@@ -507,8 +507,46 @@ WHERE id = 8;
 
 Artinya kita menghapus baris data yang column id-nya bernilai 8.
 
+## ALIAS
+
+MySQL memiliki fitur untuk melakukan alias untuk kolom dan tabel [[1]](https://www.youtube.com/watch?v=xYBclb-sYQ4) :
+
+- Alias berguna jika kita ingin mengubah nama kolom atau nama tabel ketika melakukan SELECT data
+- Mungkin saat ini alias untuk tabel tidak terlalu terlihat gunanya, tapi nanti ketika kita telah mempelajari tentang JOIN, maka fitur alias untuk tabel sangat berguna sekali
+- Nama alias yang teridiri dari satu kata tidak perlu menggunakan tanda kutip, tetapi jika lebih dari satu kata harus ditambahkan tanda kutip.
+
+### ALIAS Untuk Column
+
+Misalnya kita akan SELECT data menggunakan ALIAS pada table products yang tampilan awalnya seperti ini: <br>
+![table before alias](/img/tableBeforeAlias.png)
+
+```
+SELECT 	id			as 'Kode',
+		name		as 'Nama',
+		category	as	'Kategori',
+		price		as	'Harga',
+		quantity	as	'Stok'
+FROM products;
+```
+
+Setelah menerapkan alias tampilan nama column akan tampak seperti ini: <br>
+![tableAfterAlias](/img/tableAfterAlias.png)
+
+### ALIAS untuk Table
+
+```
+SELECT 	p.id 		AS 	'Kode',
+		p.name		AS 	'Nama',
+		p.category 	AS	'Kategori',
+		p.price		AS	'Harga',
+		p.quantity	AS	'Stok'
+FROM products AS p;
+```
+
+Hasilnya sama seperti ALIAS pada column diatas.
+
 ## Referensi
 
-- [1][programmer zaman now](https://www.youtube.com/watch?v=xYBclb-sYQ4)
+- [1] [programmer zaman now](https://www.youtube.com/watch?v=xYBclb-sYQ4)
 
 [[1]](https://www.youtube.com/watch?v=xYBclb-sYQ4)
