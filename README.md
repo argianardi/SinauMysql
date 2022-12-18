@@ -904,6 +904,33 @@ SELECT DISTINCT category FROM products;
 Maka hasilnya duplicate value dari column category hilang seperti ini: <br>
 ![table after distinct](/img/tableAfterDistinct.png)
 
+## Numeric Function
+
+### Aritmatic Operator
+
+Berikut beberapa operator aritmatic yang digunakan di mysql [[1]](https://www.youtube.com/watch?v=xYBclb-sYQ4).
+<br>
+![operator aritmatic](/img/operatorAritmatic.png)
+
+Sebagai contoh misalnya kita akan melakukan operasi aritmatika pada value di column price di table products:
+
+```
+SELECT id, price, price DIV 1000 as 'price in K' FROM products;
+```
+
+Hasilnya akan seperti ini <br>
+![table aritmatic operator](/img/tableAritmaticOperator.png)
+
+### Mathematical Function
+
+Terdapat banyak sekali mathematical function yang bisa digunakan di mysql, penjelasan lebih lengkapnya ada [disini](https://dev.mysql.com/doc/refman/8.0/en/mathematical-functions.html).
+
+Berikut contoh penggunaannya:
+
+```
+SELECT id, COS(price), SIN(price), TAN(price) FROM products;
+```
+
 ## Referensi
 
 - [1] [programmer zaman now](https://www.youtube.com/watch?v=xYBclb-sYQ4)
