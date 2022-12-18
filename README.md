@@ -802,7 +802,7 @@ Digunakan untuk melakukan pencarian sebuah kolom dengan beberapa nilai. Misal ki
 
   Hasilnya hanya akan menampilkan baris data yang column category-nya bernilai selain 'makanan' dan 'lain - lain'.
 
-### ORDER BY Clause
+## ORDER BY Clause
 
 Untuk mengurutkan data ketika kita menggunakan perintah SQL SELECT, kita bisa menambahkan ORDER BY clause [[1]](https://www.youtube.com/watch?v=xYBclb-sYQ4):
 
@@ -828,6 +828,61 @@ SELECT * FROM products  ORDER BY price DESC, name, description DESC ;
 ```
 
 Hasilnya urutan baris data berubah sesuai dengan kombinasi urutan value column price secara descending, value column name secara ascending dan value description secara ascending. Tetapi prioritas urutan tetap sesuai dengan urutan penulisan nama column di perintah ORDER BY di contoh pertama price kedua name dan terakhir description.
+
+## LIMIT Clause
+
+Mengambil seluruh data di tabel bukanlah pilihan bijak, apalagi jika datanya sudah banyak sekali [[1]](https://www.youtube.com/watch?v=xYBclb-sYQ4):
+
+- Kita bisa membatasi jumlah data yang diambil dalam SQL SELECT dengan LIMIT clause.
+- Selain membatasi jumlah data, kita juga bisa meng-skip sejumlah data yang tidak ingin kita lihat
+- LIMIT biasanya digunakan saat melakukan paging di aplikasi kita
+
+Berikut format codenya:
+
+```
+LIMIT JumlahDataYangDiskip, JumlahDataYangDitampilkan;
+```
+
+Untuk memahaminya kita coba terapakan dalam fitur pagination, berdasarkan data pada table berikut. <br>
+![table before limit](/img/tableBeforeLimit.png)
+
+Misalnya kita ingin membuat pagination setiap halaman hanya menampilkan 5 baris data.
+
+- page 1
+
+  ```
+  SELECT * FROM products LIMIT 0, 5;
+  ```
+
+  Artinya ofset/skip 0 baris data dan tampilkan sebanyak 5 baris data. Karena ini adalah page pertama sehingga jumlah baris data yang diskip adalah 0. Hasilnya tampil lima baris data dari id = 1 sampai id = 5. <br>
+  ![table after limit 1](/img/tableAfterLimit1.png)
+
+- Page 2
+
+  ```
+  SELECT * FROM products LIMIT 5, 5;
+  ```
+
+  Artinya skip 5 baris data sebelumnya (5 baris data di page 1) dan tampilkan sebanya 5 baris data selanjutnya. Hasilnya tampil 5 baris data dari id = 6,7,9,10 dan 11 (baris data id = 8 terhapus). <br>
+  ![table after limit 2](/img/tableAfterLimit2.png)
+
+- Page 3
+
+  ```
+  SELECT * FROM products LIMIT 10, 5;
+  ```
+
+  Artinya skip 10 baris data (5 baris data pertama di page 1 dan 5 baris data selanjutnya di page 2) dan tampilkan 5 baris data selanjutnya. Hasilnya tampil 5 baris data dari id = 12 sampai id = 16. <br>
+  ![table after limit 3](/img/tableAfterLimit3.png)
+
+- Page 4
+
+  ```
+  SELECT * FROM products LIMIT 15, 5;
+  ```
+
+  Artinya skip 15 baris data (5 baris data pertama dari page 1, 5 baris kedua di page 2 dan 5 baris data selanjutnya di page3) dan tampilkan 5 baris data selanjutnya. Hasilnya hanya tampil 2 baris data id = 17 dan id = 18, karana data yang tersedia hanya sisa dua baris data itu. Total baris data yang ada di contoh ini terdiri dari baris data id = 1 sampai id = 18. <br>
+  ![table data after limit 4](/img/tableAfterLimit4.png)
 
 ## Referensi
 
