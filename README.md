@@ -474,7 +474,7 @@ Sehingga data table products akan berubah menjadi seperti ini:<br>
   Sehingga hasilnya akan jadi seperti ini: <br>
   ![tabel after update 3](/img/tableAfterUpdate3.png)
 
-- UPDATE value dengan operasi matematika
+- UPDATE value dengan operasi matematika <br>
   kita akan mengubah value column price pada baris data yang memiliki id = 8 dengan menambahkan 10,000.
 
   ```
@@ -486,12 +486,29 @@ Sehingga data table products akan berubah menjadi seperti ini:<br>
   Sehingga value column price di baris data yang memiliki id = 8 terupdate menjadi 27,000. <br>
   ![table after update4](/img/tableAfterUpdate4.png)
 
+## DELETE
+
+Untuk menghapus data di table, kita bisa menggunakan perintah SQL DELETE
+Perintah SQL DELETE sama seperti UPDATE, kita perlu memberi tahu data mana yang akan di hapus dengan WHERE clause.Hati-hati, jangan sampai salah menentukan WHERE clause, karena jika salah, bisa-bisa kita akan menghapus seluruh data di table [[1]](https://www.youtube.com/watch?v=xYBclb-sYQ4).
+
+Berikut format codenya:
+
+```
+DELETE FROM nama_table
+WHERE nama_column = value;
+```
+
+Berikut contoh penggunaannya:
+
+```
+DELETE FROM products
+WHERE id = 8;
+```
+
+Artinya kita menghapus baris data yang column id-nya bernilai 8.
+
 ## Referensi
 
 - [1][programmer zaman now](https://www.youtube.com/watch?v=xYBclb-sYQ4)
 
 [[1]](https://www.youtube.com/watch?v=xYBclb-sYQ4)
-
-```
-
-```
