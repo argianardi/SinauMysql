@@ -633,7 +633,7 @@ Untuk memahaminya kita langsung lihat contoh code berikut:
 SELECT * FROM products WHERE category = 'Makanan' OR quantity > 500 AND price > 20000
 ```
 
-Pada code secara default parbandingan yang akan dieksekusi dahulu adalah oprator AND barus setelah itu dieksekusi dengan perbandingan OR seperti ini:
+Pada code diatas secara default parbandingan yang akan dieksekusi dahulu adalah oprator AND barus setelah itu dieksekusi dengan perbandingan OR seperti ini:
 
 ```
 SELECT * FROM products WHERE category  = 'Makanan' OR (quantity > 500 AND price > 20000);
@@ -645,7 +645,7 @@ Tetapi kita bisa menentukan prioritas eksekusinya menggunakan kurung() seperti i
  SELECT * FROM products WHERE (category = 'makanan' OR quantity > 500) AND price > 20000;
 ```
 
-Sehingga yang akan dieksesekusi lebih dulu adalah perbandingan operator OR baru dilanjutkan dengan eksekusi perbandingan operator AND.
+Sehingga ini membuat yang akan dieksesekusi lebih dulu adalah perbandingan operator OR baru dilanjutkan dengan eksekusi perbandingan operator AND.
 
 ### Operator LIKE
 
@@ -802,19 +802,35 @@ Digunakan untuk melakukan pencarian sebuah kolom dengan beberapa nilai. Misal ki
 
   Hasilnya hanya akan menampilkan baris data yang column category-nya bernilai selain 'makanan' dan 'lain - lain'.
 
-### Order By Clause
+### ORDER BY Clause
 
 Untuk mengurutkan data ketika kita menggunakan perintah SQL SELECT, kita bisa menambahkan ORDER BY clause [[1]](https://www.youtube.com/watch?v=xYBclb-sYQ4):
 
-- ORDER BY clause digunakan untuk mengurutkan data berdasarkan kolom yang dipilih, dan jenis urutan (ASC atau DESC)
+- ORDER BY clause digunakan untuk mengurutkan data berdasarkan kolom yang dipilih, dengan jenis urutan ASC(default) atau DESC
 - Kita juga bisa mengurutkan tidak hanya terhadap satu kolom, tapi beberapa kolom
+
+Berikut format codenya:
+
+```
+ORDER BY nama_column;
+```
+
+Dengan code diatas maka baris data akan diurutkan secara ascending berdasarkan value di nama_column tersebut. Untuk membuat urutan ascending dibolehkan untuk menuliskan ASC atau mengosonkan jenis urutannya. Untuk membuat urutan descending kita harus menambahkan DESC setelah nama_column.
+
+```
+ORDER BY nama_column DESC
+```
+
+Kita juga bisa menerapkan ORDER BY di lebih dari satu column seperti contoh berikut:
+
+```
+SELECT * FROM products  ORDER BY price DESC, name, description DESC ;
+```
+
+Hasilnya urutan baris data berubah sesuai dengan kombinasi urutan value column price secara descending, value column name secara ascending dan value description secara ascending. Tetapi prioritas urutan tetap sesuai dengan urutan penulisan nama column di perintah ORDER BY di contoh pertama price kedua name dan terakhir description.
 
 ## Referensi
 
 - [1] [programmer zaman now](https://www.youtube.com/watch?v=xYBclb-sYQ4)
 
 [[1]](https://www.youtube.com/watch?v=xYBclb-sYQ4)
-
-```
-
-```
