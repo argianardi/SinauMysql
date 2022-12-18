@@ -884,6 +884,26 @@ Misalnya kita ingin membuat pagination setiap halaman hanya menampilkan 5 baris 
   Artinya skip 15 baris data (5 baris data pertama dari page 1, 5 baris kedua di page 2 dan 5 baris data selanjutnya di page3) dan tampilkan 5 baris data selanjutnya. Hasilnya hanya tampil 2 baris data id = 17 dan id = 18, karana data yang tersedia hanya sisa dua baris data itu. Total baris data yang ada di contoh ini terdiri dari baris data id = 1 sampai id = 18. <br>
   ![table data after limit 4](/img/tableAfterLimit4.png)
 
+## SELECT DISTINCT Data
+
+Saat melakukan query dengan SELECT, kadang kita mendapatkan data yang duplikat. Misal kita ingin melihat semua kategori di tabel products, maka otomatis hasil query SELECT akan duplikat, karena banyak sekali produk dengan kategori yang sama. Jika kita ingin menghilangkan data-data duplikat tersebut , kita bisa menggunakan SELECT dengan tambahan DISTINCT sebelum nama kolom nya [[1]](https://www.youtube.com/watch?v=xYBclb-sYQ4).
+
+Beritkut format codenya:
+
+```
+SELECT nama_column FROM products;
+```
+
+Misalnya kita ingin menghilankan duplikat data value column category berikut: <br>
+![table before disting](/img/tableBeforeDistinct.png)
+
+```
+SELECT DISTINCT category FROM products;
+```
+
+Maka hasilnya duplicate value dari column category hilang seperti ini: <br>
+![table after distinct](/img/tableAfterDistinct.png)
+
 ## Referensi
 
 - [1] [programmer zaman now](https://www.youtube.com/watch?v=xYBclb-sYQ4)
