@@ -974,7 +974,7 @@ SELECT LAST_INSERT_ID();
 
 ## String Function
 
-erdapat banyak sekali string function yang bisa digunakan di mysql, penjelasan lebih lengkapnya ada [disini](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html)
+Terdapat banyak sekali string function yang bisa digunakan di mysql, penjelasan lebih lengkapnya ada [disini](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html)
 
 Berikut contoh penggunaannya:
 
@@ -990,6 +990,23 @@ Hasilnya akan seperti ini:
 
 <p align="center">
 <image src="img/tableStringFunction.png" alt="table string function"/>
+</p>
+
+## Date and Time Functions
+
+Terdapat banyak sekali Date and Time Functions, dijelaskan secara lengkap [disini](https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html).
+
+Berikut contoh penggunaannya:
+
+```
+SELECT id, created_at, YEAR(created_at) as year, MONTH(created_at) as month, DAY(created_at) as day
+FROM products;
+```
+
+Hasilnya akan seperti ini <br>
+
+<p align="center">
+<img src="img/tableDateAndTime.png" alt="table date and time function"/>
 </p>
 ## Referensi
 
