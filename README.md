@@ -972,6 +972,25 @@ Untuk melihat value terakhir dari column id (column dengan AUTO_INCREMENT) kita 
 SELECT LAST_INSERT_ID();
 ```
 
+## String Function
+
+erdapat banyak sekali string function yang bisa digunakan di mysql, penjelasan lebih lengkapnya ada [disini](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html)
+
+Berikut contoh penggunaannya:
+
+```
+SELECT	id, name,
+		LOWER(name)		as	'Name Lower',
+		UPPER(name)		as	'Name Upper',
+		LENGTH(name)	as	'Name Length'
+FROM products;
+```
+
+Hasilnya akan seperti ini:
+
+<p align="center">
+<image src="img/tableStringFunction.png" alt="table string function"/>
+</p>
 ## Referensi
 
 - [1] [programmer zaman now](https://www.youtube.com/watch?v=xYBclb-sYQ4)
