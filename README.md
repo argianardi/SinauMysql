@@ -103,7 +103,7 @@ CREATE TABLE barang (
     nama   varcaher(100),
     harga  int,
     jumlah int
-) ENGINE = InnoDB;
+);
 ```
 
 ### Menghapus Table
@@ -929,6 +929,47 @@ Berikut contoh penggunaannya:
 
 ```
 SELECT id, COS(price), SIN(price), TAN(price) FROM products;
+```
+
+## Auto Icrement
+
+Kadang kita butuh angka yang berurut untuk membuat primary key, misal 1, 2, 3, dan seterusnya [[1]](https://www.youtube.com/watch?v=xYBclb-sYQ4):
+
+- Untuk melakukan hal ini secara manual bukanlah hal bijak, apalagi jika aplikasi yang kita buat diakses oleh banyak orang secara bersamaan.
+- MySQL memiliki fitur yang bernama auto increment, fitur ini bisa kita gunakan untuk menandai bahwa suatu primary key datanya diisi secara otomatis dari angka terakhir + 1.
+- Dengan menggunakan auto increment, kita tidak perlu lalu memasukkan data primary key, ini akan otomatis dibuat oleh MySQL
+
+<small>Note: Auto increment hanya bisa digunakan untuk primary key</small>
+
+Berikut contoh penerapan AUTO_INCREMENE untuk column id:
+
+```
+CREATE TABLE admin (
+	id	int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	first_name	varchar(100) NOT NULL,
+	last_name	varchar(100) NOT NULL
+);
+```
+
+Untuk insert data kita tidak perlu mengisikan value id, karena dengan AUTO_INCREMENT column id sudah auto terisi valuenya.
+
+```
+INSERT INTO	admin(first_name, last_name)
+VALUES	('Itachi', 'Uchiha'),
+		('Kisame', 'Hoshigaki'),
+		('Madara', 'Uchiha');
+```
+
+Sehingga hasilnya value column id akan otomatis terisi dengan nilai integer yang berurutan seperti ini:
+
+<p align="center">
+<image src="img/tableAutoIncrement.png" />
+ </p>
+
+Untuk melihat value terakhir dari column id (column dengan AUTO_INCREMENT) kita bisa gunakan perintah:
+
+```
+SELECT LAST_INSERT_ID();
 ```
 
 ## Referensi
