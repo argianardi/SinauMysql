@@ -1008,6 +1008,67 @@ Hasilnya akan seperti ini <br>
 <p align="center">
 <img src="img/tableDateAndTime.png" alt="table date and time function"/>
 </p>
+
+## Control Flow Function
+
+MySQL memiliki fitur flow control function mirip seperti IF ELSE di bahasa pemrograman tetapi tidak sekompleks di bahasa pemrograman [[1]](https://www.youtube.com/watch?v=xYBclb-sYQ4). Fitur ini dibahas lebih lengkap [disini](https://dev.mysql.com/doc/refman/8.0/en/flow-control-functions.html)
+
+### Control Flow CASE
+
+Penggunaan dan fungsinya mirip seperti switch case di bahasa pemrograman.
+
+```
+SELECT	id,
+		category,
+		CASE category
+			WHEN	'Makanan'	THEN	'Enak'
+			WHEN	'Minuman'	THEN	'Segar'
+			ELSE 	'Apa Itu'
+			END AS 'Category'
+FROM products;
+```
+
+Arti dari code diatas jika value dalam column category bernilai 'Makanan' di column Category tampilkan value 'Enak', jika bernilai 'Minuman' di column Category tampilkan value 'Segar' dan jika ada value lain ubah tampilkan value 'Apa Itu' di column Category. Sehingga hasilya seperti ini:
+
+<p align="center">
+<img src="img/tableFlowControl1.png" alt="table flow control case"/>
+</p>
+Terlihat value dari column category yang bernilai "Makanan" di column Category akan tampil nilai "Enak", yang bernilai "Minuman" di column Category akan tampil nilai "Segar" dan yang bernilai selain "Makanan" dan "Minuman" ("Lain - lain) akan tampil nilai"Apa itu" di column Category.
+
+### Control Flow IF
+
+Untuk mamahaminya kita langsung saja bahas contoh berikut:
+
+```
+SELECT	id,
+		price,
+		IF(price <= 15000, 'Murah', IF(price <= 20000, 'Mahal', 'Mahal Banget')) AS 'Mahal?'
+FROM products;
+```
+
+Artinya pada column price jika valuenya lebih kecil dari 15,000 maka tampilkan value "Murah" di column Mahal?, jika valuenya lebih kecil dari 20,000 maka tampilkan value "Mahal" di column Mahal?. Dan jika value price berada diluar kedua kondisi tersebut maka tampilkan value "Mahal Banget" di column Mahal?.
+Sehingga hasilnya akan seperti ini:
+
+<p align="center">
+<img src="img/tableFlowControlIF.png" alt="teble flow control"/>
+</p>
+
+### Flow Control IFNULL
+
+Kita langsung bahas di contoh berikut:
+
+```
+SELECT	id,
+		description,
+		IFNULL(description, 'Kosong') AS 'null?'
+FROM products;
+```
+
+Artinya di column description yang valuenya NULL ganti menjadi Kosong untuk dijadikan value di column null?. Hasilnya akan tampak seperti gambar berikut:
+
+<p align="center">
+  <img src="img/tableFlowControlIfNull.png" alt="table control flow ifnull"/>
+</p>
 ## Referensi
 
 - [1] [programmer zaman now](https://www.youtube.com/watch?v=xYBclb-sYQ4)
