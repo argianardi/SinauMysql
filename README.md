@@ -1069,6 +1069,102 @@ Artinya di column description yang valuenya NULL ganti menjadi Kosong untuk dija
 <p align="center">
   <img src="img/tableFlowControlIfNull.png" alt="table control flow ifnull"/>
 </p>
+
+## Aggregate Function
+
+MySQL mendukung function-function untuk melakukan aggregate. Aggregate function adalah fungsi yang menerima koleksi nilai dan mengembalikan nilai tunggal sebagai hasilnya. Misalnya, kita ingin melihat harga paling mahal di tabel product, atau harga termurah, atau rata-rata, harga produk, atau total jumlah data di tabel, dan lain-lain [[1]](https://www.youtube.com/watch?v=xYBclb-sYQ4). Aggregate function dibahasa lebih lanjut [disini](https://dev.mysql.com/doc/refman/8.0/en/aggregate-functions.html). Berikut contoh penggunaannya:
+
+- COUNT()<br>
+  Digunakan untuk menampilkan jumlah total seluruh item value yang ada di dalam suatu column column yang memiliki value NULL tidak akan masuk hitungan COUNT.
+  ```
+  SELECT COUNT(description) AS 'total description'  FROM products;
+  ```
+  Maksud dari code di atas untuk mencari total value dari column description dari table products. Hasilnya 7, sebenarnya total item di column itu ada 17 tetapi sisanya bernilai NULL sehingga tidak ikut dihitung oleh COUNT().
+- MAX() <br>
+  Digunakan untuk mencari value terbesar di dalam sebuah column.
+  ```
+  SELECT MAX(price) AS 'Product Termahal' FROM products;
+  ```
+  Maksud dari code di atas untuk mencari nilai terbesar dari column price pada table price.
+- MIN()<br>
+  Digunakan untuk mencari nilai terkecil dari suatu column.
+  ```
+  SELECT MIN(price) AS 'Product Termurah' FROM products;
+  ```
+  Maksud dari code di atas untuk mencari nilai terkecil dari column price pada table products.
+- AVG() <br>
+  Digunakan untuk mencari nilai rata - rata dari value - value yang ada di suatu column.
+  ```
+  SELECT AVG(price) AS 'Rata-Rata Harga' FROM products;
+  ```
+  Maksud dari code diatas untuk mencari nilai rata - rata dari value - value yang ada di column price.
+- SUM() <br>
+  Digunakan untuk mencari nilai hasil penjumlahan seluruh value yang ada di suatu column.
+
+  ```
+  SELECT SUM(quantity) AS 'Total Stock' FROM products;
+  ```
+
+  Maksud dari code di atas untuk mencari nilai total jumlah value yang ada di column quantity.
+
+  ## Grouping / GROUP BY
+
+Kadang saat melakukan aggregate, kita ingin datanya di grouping berdasarkan kriteria tertentu. Misal kita ingin melihat rata-rata harga product, tapi ingin per category atau kita ingin melihat total semua product, tapi per category. Hal ini bisa dilakukan di MySQL dengan menggunakan GROUP BY clause GROUP BY clause ini hanya bisa digunakan jika kita menggunakan aggregate function [[1]](https://www.youtube.com/watch?v=xYBclb-sYQ4). GROUP BY dibahas lebih lengkap [disini](https://dev.mysql.com/doc/refman/8.0/en/group-by-modifiers.html). Berikut contoh penggunaannya:
+
+- Contoh 1
+
+  ```
+  SELECT COUNT(id) AS 'Jumlah Produk', category FROM products GROUP BY category;
+  ```
+
+  Maksud dari code di atas, tampilkan jumlah item di column id dan kelompokan hasilnya sesuai dengan value di column category. Berikut hasilnya:
+
+  <p align="center">
+  <img src="img/tableGrouping1.png" alt="table grouping 1"/>
+  </p>
+
+- Contoh 2
+
+  ```
+  SELECT MAX(price) AS 'Product Termahal', category FROM products GROUP BY category;
+  ```
+
+  Maksud dari code di atas tampilkan value terbesar dari column price dan kelompokan hasilnya berdasarkan value yang ada di column category. Berikut hasilnya:
+
+  <p align="center">
+  <img src="img/tableGrouping2.png" alt="table grouping 2"/>
+  </p>
+
+- Contoh 3
+
+  ```
+  SELECT MIN(price) AS 'Product Termurah', category FROM products GROUP BY category;
+  ```
+
+  Maksud dari code di atas tampilkan value terkecil di column price dan kelopokan hasilnya berdasarkan value yang ada di column category. Berikut hasilnya:
+  <p align="center">
+  <img src='img/tableGrouping3.png' alt='table grouping 3'/>
+  </p>
+
+- Contoh 4
+  ```
+  SELECT AVG(price) AS 'Rata-Rata Harga', category FROM products GROUP BY category;
+  ```
+  Maksud dari code diatas, tampilkan nilai rata - rata dari value di column price dan kelompokkan hasilnya sesuai dengan value di column category. Berikut hasilnya:
+  <p align='center'>
+  <img src='img/tableGrouping4.png' alt='table grouping 4'/>
+  </p>
+- Contoh 5
+
+```
+SELECT SUM(quantity) AS 'Jumlah Total Stock', category FROM products GROUP BY category;
+```
+
+Maksud code di atas, tampilkan hasil penjumlahan dari seluruh value quantity dan kelompokan hasilnya sesui dengan value yang di column category. Berikut hasilnya:
+
+<p align='center'>
+<img src='img/tableGrouping5.png' alt='table grouping 5'/>
+</p>
 ## Referensi
 
 - [1] [programmer zaman now](https://www.youtube.com/watch?v=xYBclb-sYQ4)
