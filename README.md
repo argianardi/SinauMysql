@@ -1186,6 +1186,155 @@ Hasilnya hanya akan ditampilkan nilai total 11 pada value category makanan, kare
 <image src='img/tableHavingClause.png' alt='table having clause'>
 </p>
 
+## Constraint
+
+Constraints digunakan untuk menentukan aturan yang memperbolehkan atau membatasi nilai / data apa yang akan disimpan di tabel. Kita bisa menambahkan constraint untuk menjaga data di tabel tetap aman.
+Constraint ditambahkan untuk menjaga terjadinya validasi yang salah di program kita, sehingga data yang masuk ke database tetap akan terjaga [[1]](https://www.youtube.com/watch?v=xYBclb-sYQ4).
+
+### Unique Constraint
+
+Unique constraint adalah constraint yang memastikan bahwa data kita tetap unique. Jika kita mencoba memasukkan data yang duplikat, maka MySQL akan menolak data tersebut [[1]](https://www.youtube.com/watch?v=xYBclb-sYQ4). Ada dua cara untuk membuatnya, yang pertama menggunakan CREATE TABLE saat membuat table baru atau menggunakan ALTER TABLE untuk disisipkan di table yang sudah dibuat sebelumnya.
+
+#### Membuat Unique Constraint Menggunakan CREATE TABLE
+
+Berikut contohnya:
+
+```
+CREATE TABLE customers (
+	id			int	NOT	NULL	AUTO_INCREMENT	PRIMARY	KEY,
+	email		varchar(100)	NOT NULL,
+	first_name	varchar(100)	NOT	NULL,
+	last_name	varchar(100),
+	UNIQUE	KEY	email_unique(email)
+);
+```
+
+Code di atas dimaksudkan untuk membuat table customer dengan column email yang dijadikan UNIQUE Constraint. Bagian untuk membuat UNIQUE Constraint terletak di line terakhir, yaitu di code:
+
+```
+UNIQUE KEY email_unique(email)
+```
+
+Jadi untuk membuat UNIQUE Constraint dapat dilakukan menggunakan format code:
+
+```
+UNIQUE KEY nama_constraint(nama_column_yang_dijadikan_constraint)
+```
+
+<small>nama_constraint bebas bisa dibuat dengan nama apa saja, sebaiknya dibuat dengan nama column kemudian ditambahkan unique. nama_constraint ini bisa dijadikan reference untuk menghapus UNIQUE Constraint</small><br>
+Saat table tersebut di-DESC hasilnya pada column email dibagian Key terdapat UNI, artinya value untuk column email ini harus unique. Jadi saat kita memasukkan data email yang sama untuk column email akan tertolak. Berikut tampilan hasilnya:
+
+<p align='center'>
+  <img src='img/tableUniqeConstraint1.png' alt='table unique constraint 1'/>
+</p>
+
+#### Membuat UNIQUE Constraint Menggunakan ALTER TABLE
+
+Ketika table sudah terlanjur dibuat kita masih bisa membuat salah satu column di table tersebut menggunakan ALTER TABLE, dengan format code berikut:
+
+```
+ALTER TABLE nama_table
+  ADD CONSTRAINT nama_constraint UNIQUE(nama_column);
+```
+
+Berikut contoh penggunaannya:
+
+```
+ALTER TABLE customers
+	ADD CONSTRAINT email_unique UNIQUE(email);
+```
+
+#### Menghapus UNIQUE Constraint
+
+Kita dapat menghapus UNIQUE Constraint suatu column menggunakan ALTER TABLE dengan format code berikut:
+
+```
+ALTER TABLE nama_table
+    DROP CONSTRAINT nama_constraint;
+```
+
+Berikut contoh penggunaannya kita masih mengunakan contoh table customers di atas:
+
+```
+ALTER TABLE customers
+	DROP CONSTRAINT email_unique;
+```
+
+Ketikad table tersebut di-DESC hasilnya pada column email di bagian key value UNI yang sebelumnya ada akan hilang seperti gambar berikut:
+
+<p align='center'>
+  <img src='img/tableDeleteUniqueConstraint.png' alt='tableDeleteUniqueConstraint'/>
+</p>
+
+### CHECK Constraint
+
+Constraint check ini berfungsi untuk melakukan pengecekan data sebelum disimpan di dalam table. Constraint check ini mirip quality controll, sehingga apabila data yang akan disimpan di kolom tidak sesuai persyaratan yang dibuat, maka data tersebut tidak dapat disimpan di table tersebut, MySQL akan menampilkan pesan error bahwa data tersebut tidak lolos uji cek. Misal kita ingin memastikan bahwa harga harus diatas 1,000 kita bisa menggunakan check constraint.
+
+### Membuat CHECK Constraint Menggunakan CREATE TABLE
+
+```
+CREATE TABLE products (
+	id 			int				NOT NULL	AUTO_INCREMENT	PRIMARY KEY,
+	name 		varchar(100)	NOT NULL,
+	description	text,
+	price		int 			UNSIGNED 	NOT NULL		default 0,
+	quantity 	int 			UNSIGNED 	NOT NULL 		default 0,
+	created_at  TIMESTAMP 		NOT NULL 	default 		CURRENT_TIMESTAMP,
+	CONSTRAINT	price_check		CHECK(price >= 1000)
+);
+```
+
+Check constaraint di table di atas ditujukan untuk column price. Bagian untuk membuat Constraint CHECK terletak di bagian line terakhir yaitu di code:
+
+```
+CONSTRAINT price_check CHECK(price >= 1000)
+```
+
+Jadi untuk membuat CHECK Constraint dapat dilakukan menggunakan format code:
+
+```
+CONSTRAINT nama_constraint CHECK(syarat atau kondisi logika menggunakan column di table)
+```
+
+<small>nama_constraint bebas bisa dibuat dengan nama apa saja, sebaiknya dibuat dengan nama column kemudian ditambahkan unique. nama_constraint ini bisa dijadikan reference untuk menghapus CHECK Constraint</small><br>
+Saat table tersebut di-DESC hasilnya di column Key tidak menghasilkan value apa - apa atau tanda telah ditambahkanknya CHECK Constraint. Tetapi Constraint CHECK ini membuat proses INSERT pada table products ini value column price-nya harus bernilai sama atau di atas angka 1,000 jika tidak maka akan terjadi error. Berikut tampilan hasilnya:
+
+<p align='center'>
+  <img src='img/tableCheckConstraint.png' alt='table check constraint'/>
+</p>
+
+### Membuat CHECK Constraint Menggunakan ALTER TABLE
+
+Kita juga bisa menyisipkan CHECK Constraint pada table yang sudah kita buat sebelumnya menggunakan ALTER TABLE, berikut format codenya:
+
+```
+ALTER TABLE nama_table
+  ADD CONSTRAINT nama_constraint CHECK(syarat atau kondisi logika menggunakan column di table);
+```
+
+Berikut contoh penggunaannya:
+
+```
+ALTER TABLE products
+	ADD CONSTRAINT price_check CHECK(price >= 1000);
+```
+
+### Menghapus CHECK Constraint
+
+Kita dapat menghapus CHECK Constraint menggunakan format code berikut:
+
+```
+ALTER TABLE nama_table
+  DROP CONSTRAINT nama_constraint;
+```
+
+Berikut contoh penggunaannya:
+
+```
+ALTER TABLE products
+	DROP CONSTRAINT price_check;
+```
+
 ## Referensi
 
 - [1] [programmer zaman now](https://www.youtube.com/watch?v=xYBclb-sYQ4)
