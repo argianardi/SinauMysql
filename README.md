@@ -1107,7 +1107,9 @@ MySQL mendukung function-function untuk melakukan aggregate. Aggregate function 
 
   Maksud dari code di atas untuk mencari nilai total jumlah value yang ada di column quantity.
 
-  ## Grouping / GROUP BY
+## Grouping
+
+### GROUP BY
 
 Kadang saat melakukan aggregate, kita ingin datanya di grouping berdasarkan kriteria tertentu. Misal kita ingin melihat rata-rata harga product, tapi ingin per category atau kita ingin melihat total semua product, tapi per category. Hal ini bisa dilakukan di MySQL dengan menggunakan GROUP BY clause GROUP BY clause ini hanya bisa digunakan jika kita menggunakan aggregate function [[1]](https://www.youtube.com/watch?v=xYBclb-sYQ4). GROUP BY dibahas lebih lengkap [disini](https://dev.mysql.com/doc/refman/8.0/en/group-by-modifiers.html). Berikut contoh penggunaannya:
 
@@ -1156,15 +1158,34 @@ Kadang saat melakukan aggregate, kita ingin datanya di grouping berdasarkan krit
   </p>
 - Contoh 5
 
+  ```
+  SELECT SUM(quantity) AS 'Jumlah Total Stock', category FROM products GROUP BY category;
+  ```
+
+  Maksud code di atas, tampilkan hasil penjumlahan dari seluruh value quantity dan kelompokan hasilnya sesui dengan value yang di column category. Berikut hasilnya:
+
+  <p align='center'>
+  <img src='img/tableGrouping5.png' alt='table grouping 5'/>
+  </p>
+
+### HAVING Clause
+
+Digunakan untuk melakukan filter terhadap data yang sudah kita grouping. Misal kita ingin menampilkan rata-rata harga per kategori, tapi yang harganya diatas 10,000. Jika menggunakan WHERE di SELECT, hal ini tidak bisa dilakukan. Untuk memfilter hasil aggregate function, kita harus menggunakan HAVING clause [[1]](https://www.youtube.com/watch?v=xYBclb-sYQ4).
+
+Sebagai contoh misalnya kita ingin melihat jumlah item product yang dikelompokan berdasarkan value di column category tetapi difilter hanya ditampilkan yang jumlah itemnya di atas 5 saja.
+
 ```
-SELECT SUM(quantity) AS 'Jumlah Total Stock', category FROM products GROUP BY category;
+SELECT	COUNT(id)	AS	Total,	category
+FROM	products
+GROUP BY category HAVING Total > 5;
 ```
 
-Maksud code di atas, tampilkan hasil penjumlahan dari seluruh value quantity dan kelompokan hasilnya sesui dengan value yang di column category. Berikut hasilnya:
+Hasilnya hanya akan ditampilkan nilai total 11 pada value category makanan, karena value lainnya (minuman dan lain-lain) jumlah itemnya di bawah 3.
 
 <p align='center'>
-<img src='img/tableGrouping5.png' alt='table grouping 5'/>
+<image src='img/tableHavingClause.png' alt='table having clause'>
 </p>
+
 ## Referensi
 
 - [1] [programmer zaman now](https://www.youtube.com/watch?v=xYBclb-sYQ4)
