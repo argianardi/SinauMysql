@@ -279,12 +279,12 @@ Kita bisa menyebutkan kolom mana yang ingin kita isi, jika kita tidak menyebutka
 
 ```
 CREATE TABLE products (
-	id 			    int NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	name 		    varchar(100) NOT NULL,
-	description	text,
-	price		    int UNSIGNED NOT NULL default 0,
-	quantity 	  int UNSIGNED NOT NULL default 0,
-	created_at  TIMESTAMP NOT NULL default CURRENT_TIMESTAMP
+  id          int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  name        varchar(100) NOT NULL,
+  description text,
+  price       int UNSIGNED NOT NULL default 0,
+  quantity    int UNSIGNED NOT NULL default 0,
+  created_at  TIMESTAMP NOT NULL default CURRENT_TIMESTAMP
 );
 ```
 
@@ -308,9 +308,9 @@ Kita juga bisa INSERT lebih dari satu data secara bersamaan:
 
 ```
 INSERT INTO products(name, price, description, quantity)
-VALUES 	('Mie Ayam Spesial', 25000, 'Mie dan bakso berkualitas', 100),
-		('Mie Ayam Ceker', 30000, 'Mie + bakso + ceker', 100),
-		('Mie Ayam Spesial', 25000, 'Mie dan bakso berkualitas', 100);
+VALUES  ('Mie Ayam Spesial', 25000, 'Mie dan bakso berkualitas', 100),
+        ('Mie Ayam Ceker', 30000, 'Mie + bakso + ceker', 100),
+        ('Mie Ayam Spesial', 25000, 'Mie dan bakso berkualitas', 100);
 ```
 
 Untuk melihat hasilnya kita bisa menggunakan perintah SELECT:
@@ -1445,6 +1445,110 @@ Berikut contohnya:
 ALTER TABLE sellers
 	DROP INDEX name_index;
 ```
+
+## FULLTEXT Search
+
+Kadang kita ingin mencari sebuah kata dalam tabel, dan biasanya kita akan menggunakan LIKE operator. Operasi yang dilakukan LIKE operator adalah dengan cara mencari seluruh data di tabel dari baris pertama sampai terakhir, hal ini membuat operasi LIKE sangat lambat. Menambah index di tabel juga tidak akan membantu, karena LIKE operator tidak menggunakan index. MySQL menyediakan fitur Full Text Search jika ada kasus kita ingin melakukan hal ini [[1]](https://www.youtube.com/watch?v=xYBclb-sYQ4).
+
+FULLTEXT Search memungkinkan kita bisa mencari sebagian kata di kolom dengan tipe data String. Ini sangat cocok ketika pada kasus kita memang membutuhkan pencarian yang tidak hanya sekedar operasi = (equals, sama dengan). Full-Text dibahas lebih banyak [di sini](https://dev.mysql.com/doc/refman/8.0/en/fulltext-search.html).
+
+### Membuat FULLTEXT Menggunakan CREATE TABLE
+
+Untuk memahaminya kita langsung bahas contoh di bawah ini:
+
+```
+CREATE TABLE products (
+	id 			int				NOT NULL	AUTO_INCREMENT	PRIMARY KEY,
+	name 		varchar(100)	NOT NULL,
+	description	text,
+	price		int 			UNSIGNED 	NOT NULL		default 0,
+	quantity 	int 			UNSIGNED 	NOT NULL 		default 0,
+	created_at  TIMESTAMP 		NOT NULL 	default 		CURRENT_TIMESTAMP,
+	FULLTEXT	product_search(name, description)
+);
+
+SHOW CREATE TABLE products;
+```
+
+Bagian untuk membuat FULLTEXT terletak di key word FULLTEXT, yaitu menggunakan format code:
+
+```
+FULLTEXT nama_fulltext(nama-nama_column_yang_diberi_fitru_fulltext)
+```
+
+### Membuat FULLTEXT Menggunakan ALTER TABLE
+
+Kita juga bisa menambahkan FULLTEXT untuk column table yang sudah kita buat sebelumnya menggunakan ALTER TABLE:
+
+```
+ALTER TABLE nama_table
+  ADD FULLTEXT nama_fulltext(nama-nama_column_yang_akan_diberi_fitur_fulltext)
+```
+
+Berikut contohnya:
+
+```
+ALTER TABLE products
+	ADD FULLTEXT product_fulltext(name, description);
+```
+
+### Menghapus FULLTEXT Search
+
+Kita dapat menghapus FULLTEXT dengan menggunakan DROP INDEX, karena sebenarnya FULLTEXT ini adalah INDEX. Berikut format codenya:
+
+```
+ALTER TABLE nama_table
+  DROP INDEX nama_fulltext
+```
+
+Berikut contoh penggunaannya:
+
+```
+ALTER TABLE products3
+	DROP INDEX product_search;
+```
+
+Setelah kita membuat FULLTEXT pada table kita biasa menerapkan Mode FULLTEXT untuk melakukan pencarian data. Berikut beberapa metode dalam FULLTEXT:
+
+- Natural Language <br>
+  Digunakan untuk mencari seperti bahasa natural (per kata). Natural language dibahas lebih lengkap [di sini](https://dev.mysql.com/doc/refman/8.0/en/fulltext-natural-language.html). Berikut contohnya:
+
+  ```
+  SELECT * FROM products
+  WHERE MATCH(name, description) AGAINST('ayam' IN NATURAL LANGUAGE MODE);
+  ```
+
+  Maksud dari code di atas tampilkan baris data seluruh column dari table products tapi filter hasilnya hanya tampilkan baris data yang value di column name dan description ada kata 'ayam'. Maka hasilnya akan seperti ini:
+  <p align='center'>
+    <img src='img/tableFullTextNaturalMode.png' alt='table full text natural mode'/>
+  </p>
+  Terlihat hasilnya hanya ditampilkan baris data yang value pada column name dan description terdapat kata 'ayam' dan diurutkan berdasarkan tingkat kemiripan antara value di column name dan di column description.
+
+- Boolean<br>
+  Mencari dengan kemampuan mengandung kata (+) atau tidak mengandung kata (-) dan lain-lain. Boolean dibahas lebih lengkap [di sini](https://dev.mysql.com/doc/refman/8.0/en/fulltext-boolean.html). Berikut contoh penggunaanya:
+
+  ```
+  SELECT * FROM products
+  WHERE MATCH(name, description) AGAINST('+ayam -bakso' IN BOOLEAN MODE);
+  ```
+
+  Maksud dari code di atas, tampilkan baris data tetapi filter hasilnya hanya tampilkan baris data yang value di column name dan description ada kata 'ayam' dan tidak ada kata 'bakso'. Maka hasilnya akan seperti ini:
+  <p align='center'>
+    <img src='img/tableFullTextBooleanMode.png' alt='table full text boolean mode'/>
+  </p>
+  Terlihat hasilnya hanya ditampilkan baris data yang value di column name dan column description terdapat kata 'ayam' dan tidak ada kata 'bakso'.
+
+- Query Expansion <br>
+  Digunakan mencari seperti natural language, namun melakukan dua kali pencarian, pencarian pertama menggunakan natural language, pencarian kedua melakukan pencarian dari kedekatan hasil pertama, misal kita mencari kata “bakso”, lalu ternyata di dalam “bakso” ada kata “mie”, maka kemungkinan query kedua akan mencari kata “mie” juga. Query Expansion dibahas lebih lengkap [di sini](https://dev.mysql.com/doc/refman/8.0/en/fulltext-query-expansion.html). Berikut contoh penggunaannya:
+  ```
+  SELECT * FROM products
+  WHERE MATCH(name, description) AGAINST('bakso' WITH QUERY EXPANSION)
+  ```
+  Maksud dari code di atas tampilkan semua baris data dari table products tapi filter hasilnya hanya tampilkan baris data yang value di column name dan description terdapat kata 'bakso'. Maka hasilnya akan seperti ini:
+  <p align='center'>
+    <img src='img/tableFullTextQueryExpansion.png' alt='table full text query expansion'/>
+  </p>
+  Terlihat hasilnya hanya ditampilkan baris data yang value name dan description terdapat kata 'bakso'. Tetapi di bawahnya ada lagi baris data yang sebenarnya tidak ada kata 'bakso', hal ini dikarenakan pada mode ini dilakukan dua kali query baris data tersebut ditampilkan karena adanya kemiriban dengan value di baris pertama.
 
 ## Referensi
 
