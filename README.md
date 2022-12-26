@@ -1335,6 +1335,117 @@ ALTER TABLE products
 	DROP CONSTRAINT price_check;
 ```
 
+## INDEX
+
+Secara default, MySQL akan menyimpan data di dalam disk seperti tabel biasanya. Hal ini menyebabkan ketika kita mencari data, maka MySQL akan melakukan pencarian dari baris pertama sampai terakhir. Artinya semakin banyak datanya, maka akan semakin lambat proses pencarian datanya. Saat kita membuat index, MySQL akan menyimpan data dalam struktur data [B-Tree (self-balancing tree)](https://en.wikipedia.org/wiki/B-tree). Tidak hanya akan mempermudah kita saat melakukan pencarian, index juga akan mempermudah kita ketika melakukan pengurutan menggunakan ORDER BY. INDEX dibahas lebih banyak [di sini](https://dev.mysql.com/doc/refman/8.0/en/optimization-indexes.html).
+
+### Cara Kerja Index
+
+Berikut cara kerja dari index [[1]](https://www.youtube.com/watch?v=xYBclb-sYQ4):
+
+- Kita bisa membuat lebih dari satu index di table, dan setiap kita membuat index, kita bisa membuat index untuk beberapa kolom sekaligus.
+- Misal kita membuat index (col1, col2, col3) artinya kita punya kemampuan untuk mencari lebih menggunakan index untuk kombinasi query di (col1), (col1, col2) dan (col1, col2, col3)
+
+### Efek Samping Membuat Index
+
+INDEX mungkin akan mempercepat untuk proses pencarian dan query data. Namun saat kita membuat index, artinya MySQL akan melakukan proses update data di index tiap kali kita menambah, mengubah atau menghapus data di table. Artinya Index membuat proses pencarian dan query lebih cepat, tapi memperlambat proses manipulasi data. Oleh karena itu, kita harus bijak saat membuat index [[1]](https://www.youtube.com/watch?v=xYBclb-sYQ4).
+
+### Tidak Perlu INDEX
+
+Saat kita membuat PRIMARY KEY dan UNIQUE constraint, kita tidak perlu menambahkan lagi index. Hal ini dikarenakan MySQL secara otomatis akan menambahkan index pada kolom PRIMARY KEY dan UNIQUE constraint [[1]](https://www.youtube.com/watch?v=xYBclb-sYQ4).
+
+### Membuat INDEX Menggunakan CREATE TABLE
+
+```
+CREATE TABLE sellers (
+	id			int	NOT NULL	AUTO_INCREMENT PRIMARY KEY,
+	name		varchar(100)	NOT NULL,
+	name2		varchar(100)	NOT NULL,
+	name3		varchar(100)	NOT NULL,
+	email		varchar(100)	NOT NULL,
+	UNIQUE KEY	email_unique(email),
+	INDEX		name2_index(name2),
+	INDEX		name3_index(name3),
+	INDEX		name1_name2_name3_index(name, name2, name3)
+);
+
+SHOW CREATE TABLE sellers;
+```
+
+Dari contoh table di atas bagian untuk membuat INDEX terletak di key word INDEX. berikut format code untuk membuat INDEX tunggal:
+
+```
+INDEX nama_index(column_yang_dijadikan_index)
+```
+
+Untuk membuat format code kombinasi INDEX dilakukan menggunakan format code berikut:
+
+```
+INDEX nama_index(nama_nama_column_yang_dijadikan_kombinasi_INDEX)
+```
+
+Berikut cara kerja pada INDEX:
+
+- Jika kita ingin mendapatkan data dengan kondisi berikut:
+  ```
+  SELECT * FROM sellers WHERE nama = 'X';
+  ```
+  maka ini akan melakukan pencarian data dengan mengacu pada INDEX kombinasi tetapi langsung spesifik ke column name.
+- Jika kita ingin mendapatkan data dengan kondisi berikut:
+
+  ```
+  SELECT * FROM sellers WHERE name = 'X' AND name2 = 'X';
+  ```
+
+  maka ini akan melakukan pencarian data dengan mengacu pada INDEX kombinasi dan langsung sepesifik ke column name dan name2
+
+- Jika kita ingin mencari data dengan kondisi berikut:
+  ```
+  SELECT * FROM sellers WHERE name = 'X' AND name2 = 'X' AND name = 'X';
+  ```
+  Maka ini akan melakukan pencarian data dengan mengacu pada INDEX kombinasi dan lansung spesifik ke column name, name2 dan name3.
+- Tetapi jika kita ingin mencari data dengan kondisi berikut:
+  ```
+  SELECT * FROM sellers WHERE name2 = 'X';
+  ```
+  Maka ini akan melakukan pencarian data dengan mengacu pada INDEX name2 (bukan INDEX kombinasi) dan tentunya akan langsung spesifik ke column name2. Begitu juga hal yang sama akan terjadi jika kita melakukan pencaian data dengan kondisi berikut:
+  ```
+  SELECT * FROM sellers WHERE name3 = 'X';
+  ```
+  Makan ini juga akan melakukan pencarian data dengan mengacu pada INDEX name3 dan tentunya langsung spesifik ke column name2.
+
+### Membuat INDEX Menggunakan ALTER TABLE
+
+Kita juga bisa membuat INDEX untuk column di table yang sudah kita buat sebelumnya. Berikut format codenya:
+
+```
+ALTER TABLE nama_table
+  ADD INDEX nama_index(nama_column_yang_dijadikan_index)
+```
+
+Berikut contohnya:
+
+```
+ALTER TABLE sellers
+ADD INDEX name_index(name);
+```
+
+### Menghapus INDEX
+
+Untuk menghapus INDEX dapat dilakukan dengan format code berikut:
+
+```
+ALTER TABLE nama_table
+  DROP INDEX nama_index;
+```
+
+Berikut contohnya:
+
+```
+ALTER TABLE sellers
+	DROP INDEX name_index;
+```
+
 ## Referensi
 
 - [1] [programmer zaman now](https://www.youtube.com/watch?v=xYBclb-sYQ4)
