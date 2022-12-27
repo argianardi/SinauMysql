@@ -1693,7 +1693,7 @@ Sehingga hasilnya nanti akan tampak seperti ini:
   <img src='img/tableJoin1.png' alt='table join 1'/>
 </p>
 
-Kita juga bisa memilih hanya menampilkan value dari beberapa column saja:
+Terlihat hasilnya ditampilkan semua data-data value dari column yang ada di table `wishlist` dan `product` yang kita `JOIN` dengan urutan column - column di table `wishlist` kemudian dilanjutkan dengan column - column yang ada di table `products`. Kita juga bisa memilih hanya menampilkan value dari beberapa column saja:
 
 ```
 SELECT wishlist.id, products.id, products.name, wishlist.description
@@ -1712,7 +1712,7 @@ Kita juga bisa menambahkan alias untuk merubah nama columnya:
 SELECT w.id           AS  id_wishlist,
        p.id           AS  id_product,
        p.name         AS  product_name,
-       w.description  AS	wishlist_description
+       w.description  AS  wishlist_description
 FROM	wishlist		AS	w
 		JOIN products	AS	p ON(w.id_product = p.id);
 ```
@@ -1722,6 +1722,55 @@ Sehingga hasilnya nanti akan tampak seperti ini:
 <p align='center'>
   <img src='img/tableJoin3.png' alt='table join 3'/>
 </p>
+
+### JOIN Ke Lebih Dari Satu Table
+
+Kita masih menggunakan contoh diatas, menggunakan table `wishlist` tadi. Sebelumnya kita sudah melakukan `JOIN` dengan table `products` sekarang kita akan menlakukan `JOIN` dengan table `customers`. Berikut langkah - langkahnya:
+
+- Untuk melakukannya, tentu saja pertama kita harus membuat table `customers` terlebih dahulu:
+
+  ```
+  CREATE TABLE customers (
+    id          int	NOT	NULL	AUTO_INCREMENT	PRIMARY	KEY,
+    email       varchar(100)	NOT NULL,
+    first_name  varchar(100)	NOT	NULL,
+    last_name   varchar(100),
+    UNIQUE KEY  email_unique(email)
+  );
+  ```
+
+- Selanjutnya buat column baru untuk id customer di table `wishlist`:
+
+```
+ALTER TABLE  wishlist
+  ADD COLUMN id_customer INT;
+```
+
+- Kemudian buat FOREIGN KEY lagi di table `wishlist` tepatnya untuk column `id_customer` dengan reference ke column `id` di table `customer`:
+
+```
+ALTER TABLE    wishlist
+ADD CONSTRAINT fk_wishlist_customer
+FOREIGN KEY(id_customer) REFERENCES customers(id);
+
+SHOW CREATE TABLE wishlist;
+```
+
+- Terakhir lakukan JOIN terhadap ketiga table, yaitu `wishlist`, `products` dan `customers`.
+
+```
+SELECT * FROM wishlist
+JOIN products  ON(products.id  = wishlist.id_product)
+JOIN customers ON(customers.id = wishlist.id_customer);
+```
+
+Maka hasilnya akan terlihat seperti ini:
+
+<p align='center'>
+  <img src='img/tableJoin4.png' alt='table join 4'/>
+</p>
+
+Terlihat hasilnya ditampilkan semua data-data value dari column yang ada di ketiga table yang kita `JOIN` dengan urutan column - column di table `wishlist` kemudian dilanjutkan dengan column - column yang ada di table `products` dan terakhir column - column di table `customers`.
 
 ## Referensi
 
