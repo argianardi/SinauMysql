@@ -1659,13 +1659,118 @@ Seperti yang sebelumnya dibahas, ketika kita menghapus data yang berelasi, maka 
 Berikut contoh penggunaannya:
 
 ```
-ALTER	TABLE		wishlist
+ALTER	TABLE wishlist
 	ADD	CONSTRAINT	fk_wishlist_product
 		FOREIGN KEY(id_product)	REFERENCES	products(id)
 			ON DELETE CASCADE	ON UPDATE	CASCADE;
 ```
 
-Sehingga dengan CASCADE pada code di atas membuat kita bisa menghapus dan mengaupdate value colmn yang dijadikan references untuk FORE columnIGN KEY (di contoh column id pada table (di contoh id_product) products). tetapi kita harus ingat saat kita menghapus value column tersebut maka value column yang dijadikan FOREIGN KEY tersebut (di contoh id_product) juga akan ikut terhapus.
+Sehingga dengan CASCADE pada code di atas membuat kita bisa menghapus dan mengaupdate value colmn yang dijadikan references untuk column FOREIGN KEY (di contoh column id pada table (di contoh id_product) products). tetapi kita harus ingat saat kita menghapus value column tersebut maka value column yang dijadikan FOREIGN KEY tersebut (di contoh id_product) juga akan ikut terhapus.
+
+## JOIN
+
+Berikut beberapa hal yang harus kita ketahui tentang JOIN [[1]](https://www.youtube.com/watch?v=xYBclb-sYQ4):
+
+- MySQL mendukung query SELECT langsung ke beberapa tabel secara sekaligus
+- Namun untuk melakukan itu, kita perlu melakukan JOIN di SQL SELECT yang kita buat
+- Untuk melakukan JOIN, kita perlu menentukan tabel mana yang merupakan referensi ke tabel lain
+- Join cocok sekali dengan foreign key, walaupun di MySQL tidak ada aturan kalau JOIN harus ada foreign key
+- Join di MySQL bisa dilakukan untuk lebih dari beberapa tabel. Tapi ingat, semakin banyak JOIN, maka proses query akan semakin berat dan lambat, jadi harap bijak ketika melakukan JOIN
+- Idealnya kita melakukan JOIN jangan lebih dari 5 tabel, karena itu bisa berdampak ke performa query yang lambat
+
+Berikut contoh penggunaanya:
+
+```
+SELECT * FROM wishlist
+	JOIN products ON(wishlist.id_product = products.id);
+```
+
+Maksud dari code diatas adalah untuk melakukan `JOIN` antara table `wishlist` ke table `products` dengan reference column `id_product` di table `wishlist` dan column `id` di table `products`.
+
+Sehingga hasilnya nanti akan tampak seperti ini:
+
+<p align='center'>
+  <img src='img/tableJoin1.png' alt='table join 1'/>
+</p>
+
+Terlihat hasilnya ditampilkan semua data-data value dari column yang ada di table `wishlist` dan `product` yang kita `JOIN` dengan urutan column - column di table `wishlist` kemudian dilanjutkan dengan column - column yang ada di table `products`. Kita juga bisa memilih hanya menampilkan value dari beberapa column saja:
+
+```
+SELECT wishlist.id, products.id, products.name, wishlist.description
+	FROM wishlist JOIN products ON(wishlist.id_product = products.id);
+```
+
+Sehingga hasilnya akan tampak seperti ini:
+
+<p align='center'>
+  <img src='img/tableJoin2.png' alt='table join 2'>
+</p>
+
+Kita juga bisa menambahkan alias untuk merubah nama columnya:
+
+```
+SELECT w.id           AS  id_wishlist,
+       p.id           AS  id_product,
+       p.name         AS  product_name,
+       w.description  AS  wishlist_description
+FROM	wishlist		AS	w
+		JOIN products	AS	p ON(w.id_product = p.id);
+```
+
+Sehingga hasilnya nanti akan tampak seperti ini:
+
+<p align='center'>
+  <img src='img/tableJoin3.png' alt='table join 3'/>
+</p>
+
+### JOIN Ke Lebih Dari Satu Table
+
+Kita masih menggunakan contoh diatas, menggunakan table `wishlist` tadi. Sebelumnya kita sudah melakukan `JOIN` dengan table `products` sekarang kita akan menlakukan `JOIN` dengan table `customers`. Berikut langkah - langkahnya:
+
+- Untuk melakukannya, tentu saja pertama kita harus membuat table `customers` terlebih dahulu:
+
+  ```
+  CREATE TABLE customers (
+    id          int	NOT	NULL	AUTO_INCREMENT	PRIMARY	KEY,
+    email       varchar(100)	NOT NULL,
+    first_name  varchar(100)	NOT	NULL,
+    last_name   varchar(100),
+    UNIQUE KEY  email_unique(email)
+  );
+  ```
+
+- Selanjutnya buat column baru untuk id customer di table `wishlist`:
+
+```
+ALTER TABLE  wishlist
+  ADD COLUMN id_customer INT;
+```
+
+- Kemudian buat FOREIGN KEY lagi di table `wishlist` tepatnya untuk column `id_customer` dengan reference ke column `id` di table `customer`:
+
+```
+ALTER TABLE    wishlist
+ADD CONSTRAINT fk_wishlist_customer
+FOREIGN KEY(id_customer) REFERENCES customers(id);
+
+SHOW CREATE TABLE wishlist;
+```
+
+- Terakhir lakukan JOIN terhadap ketiga table, yaitu `wishlist`, `products` dan `customers`.
+
+```
+SELECT * FROM wishlist
+JOIN products  ON(products.id  = wishlist.id_product)
+JOIN customers ON(customers.id = wishlist.id_customer);
+```
+
+Maka hasilnya akan terlihat seperti ini:
+
+<p align='center'>
+  <img src='img/tableJoin4.png' alt='table join 4'/>
+</p>
+
+Terlihat hasilnya ditampilkan semua data-data value dari column yang ada di ketiga table yang kita `JOIN` dengan urutan column - column di table `wishlist` kemudian dilanjutkan dengan column - column yang ada di table `products` dan terakhir column - column di table `customers`.
 
 ## Referensi
 
