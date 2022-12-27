@@ -1659,14 +1659,52 @@ Seperti yang sebelumnya dibahas, ketika kita menghapus data yang berelasi, maka 
 Berikut contoh penggunaannya:
 
 ```
-ALTER	TABLE		wishlist
+ALTER	TABLE wishlist
 	ADD	CONSTRAINT	fk_wishlist_product
 		FOREIGN KEY(id_product)	REFERENCES	products(id)
 			ON DELETE CASCADE	ON UPDATE	CASCADE;
 ```
 
-Sehingga dengan CASCADE pada code di atas membuat kita bisa menghapus dan mengaupdate value colmn yang dijadikan references untuk FORE columnIGN KEY (di contoh column id pada table (di contoh id_product) products). tetapi kita harus ingat saat kita menghapus value column tersebut maka value column yang dijadikan FOREIGN KEY tersebut (di contoh id_product) juga akan ikut terhapus.
+Sehingga dengan CASCADE pada code di atas membuat kita bisa menghapus dan mengaupdate value colmn yang dijadikan references untuk column FOREIGN KEY (di contoh column id pada table (di contoh id_product) products). tetapi kita harus ingat saat kita menghapus value column tersebut maka value column yang dijadikan FOREIGN KEY tersebut (di contoh id_product) juga akan ikut terhapus.
 
+## JOIN
+
+Berikut beberapa hal yang harus kita ketahui tentang JOIN [[1]](https://www.youtube.com/watch?v=xYBclb-sYQ4):
+
+- MySQL mendukung query SELECT langsung ke beberapa tabel secara sekaligus
+- Namun untuk melakukan itu, kita perlu melakukan JOIN di SQL SELECT yang kita buat
+- Untuk melakukan JOIN, kita perlu menentukan tabel mana yang merupakan referensi ke tabel lain
+- Join cocok sekali dengan foreign key, walaupun di MySQL tidak ada aturan kalau JOIN harus ada foreign key
+- Join di MySQL bisa dilakukan untuk lebih dari beberapa tabel. Tapi ingat, semakin banyak JOIN, maka proses query akan semakin berat dan lambat, jadi harap bijak ketika melakukan JOIN
+- Idealnya kita melakukan JOIN jangan lebih dari 5 tabel, karena itu bisa berdampak ke performa query yang lambat
+
+Berikut contoh penggunaanya:
+
+```
+SELECT * FROM wishlist
+	JOIN products ON(wishlist.id_product = products.id);
+```
+
+Maksud dari code diatas adalah untuk melakukan `JOIN` antara table `wishlist` ke table `products` dengan reference column `id_product` di table `wishlist` dan column `id` di table `products`.
+
+Sehingga hasilnya nanti akan tampak seperti ini:
+
+<p align='center'>
+  <img src='img/tableJoin1.png' alt='table join 1'/>
+</p>
+
+Kita juga bisa memilih hanya menampilkan value dari beberapa column saja:
+
+```
+SELECT wishlist.id, products.id, products.name, wishlist.description
+	FROM wishlist JOIN products ON(wishlist.id_product = products.id);
+```
+
+Sehingga hasilnya akan tampak seperti ini:
+
+<p align='center'>
+  <img src='img/tableJoin2.png' alt='table join 2'>
+</p>
 ## Referensi
 
 - [1] [programmer zaman now](https://www.youtube.com/watch?v=xYBclb-sYQ4)
