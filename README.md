@@ -1772,6 +1772,57 @@ Maka hasilnya akan terlihat seperti ini:
 
 Terlihat hasilnya ditampilkan semua data-data value dari column yang ada di ketiga table yang kita `JOIN` dengan urutan column - column di table `wishlist` kemudian dilanjutkan dengan column - column yang ada di table `products` dan terakhir column - column di table `customers`.
 
+## One to One Relationship
+
+Sekarang kita sudah tahu untuk melakukan relasi antar tabel, kita bisa menggunakan FOREIGN KEY. Untuk melakukan SELECT beberapa tabel, kita bisa menggunakan JOIN. Dalam konsep relasi, ada banyak jenis-jenis relasi antar tabel. Sekarang kita akan bahas dari yang pertama yaitu One to One relationship.
+
+One to One relationship adalah relasi antar tabel yang tiap data di sebuah tabel hanya boleh berelasi ke maksimal 1 data di tabel lainnya, tidak boleh ada relasi lebih dari 1 data [[1]](https://www.youtube.com/watch?v=xYBclb-sYQ4). Contoh misal, kita membuat aplikasi toko online yang terdapat fitur wallet. Wallet ini memiliki relasi dengan customer yaitu 1 customer cuma boleh punya 1 wallet.
+
+### Membuat One To One Relationship
+
+Cara membuat One to One relationship cukup mudah. Kita bisa membuat kolom foreign key, lalu set kolom tersebut menggunakan UNIQUE KEY, hal ini dapat mencegah terjadi data di kolom tersebut agar tidak duplikat. Atau cara lainnya, kita bisa membuat tabel dengan primary key yang sama, sehingga tidak butuh lagi kolom untuk FOREIGN KEY [[1]](https://www.youtube.com/watch?v=xYBclb-sYQ4). Kita langsung lihat ke contoh, misalnya kita ingin membuat fitur wallet yang memiliki relasi dengan customer yaitu 1 customer hanya boleh memiliki 1 wallet.
+
+Jadi yang harus kita lakukan, buat table `wallet` kemudian buat column untuk menampung value id customer. Kita beri nama column tersebut `id_customer` kemudian kita buat column tersebut jadi `UNIQUE KEY` agar value di column ini tidak terduplikasi. Terakhir kita buat column `id_customer` tadi jadi `FOREIGN KEY` dengan reference ke table `customers` tepatnya di column `id` :
+
+```
+CREATE TABLE wallet (
+   id           int  NOT NULL  AUTO_INCREMENT  PRIMARY  KEY,
+   id_customer  int  NOT NULL,
+   balance      int  NOT NULL  default 0,
+   UNIQUE  KEY  id_customer_unique(id_customer),
+   FOREIGN KEY  fk_wallet_customer(id_customer)  REFERENCES  customers (id)
+);
+
+DESC wallet;
+SHOW CREATE TABLE wallet;
+```
+
+Setelah itu kita coba lakukan `INSERT` data di table `wallet` ini:
+
+```
+INSERT INTO wallet(id_customer) VALUES(1), (3);
+SELECT * FROM wallet;
+```
+
+Dengan code di atas kita melakukan `INSERT` di table `wallet` tetapi hanya value untuk column `id_costumer`, untuk column `id` sudah `AUTO_INCREMENT` dan column `balance` mengikuti nilai defautnya. Sehingga hasilnya akan seperti ini:
+
+<p align='center'>
+  <img src='' alt='table one to one 1'/>
+</p>
+
+Untuk melihat hasil `JOIN` relasi table `wallet` dan `customers` ini dapat dilakukan dengan code:
+
+```
+SELECT customers.email, wallet.balance
+FROM   wallet  JOIN  customers  ON(wallet.id_customer = customers.id);
+```
+
+Hasilnya akan tampak seperti ini:
+
+<p align='center'>
+  <img src='' alt='table one to one 2'>
+</p>
+
 ## Referensi
 
 - [1] [programmer zaman now](https://www.youtube.com/watch?v=xYBclb-sYQ4)
