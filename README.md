@@ -1550,6 +1550,10 @@ Setelah kita membuat FULLTEXT pada table kita biasa menerapkan Mode FULLTEXT unt
   </p>
   Terlihat hasilnya hanya ditampilkan baris data yang value name dan description terdapat kata 'bakso'. Tetapi di bawahnya ada lagi baris data yang sebenarnya tidak ada kata 'bakso', hal ini dikarenakan pada mode ini dilakukan dua kali query baris data tersebut ditampilkan karena adanya kemiriban dengan value di baris pertama.
 
+## Tabel Relationship
+
+Dalam Relational DBMS (Data Base Management System), salah satu fitur andalan nya adalah table relationship, yaitu relasi antar tabel. Dengan ini kita bisa melakukan relasi dari satu tabel ke tabel lain. Dalam kehidupan nyata pun pasti kita akan sering membuat relasi antar tabel. Misal, saat kita membuat aplikasi penjualan, di laporan penjualan pasti ada data barang. Jika di tabel artinya tabel penjualan akan berelasi dengan tabel barang. Misal dalam aplikasi kampus, tabel mahasiswa akan berelasi dengan tabel mata kuliah, dan tabel dosen [[1]](https://www.youtube.com/watch?v=xYBclb-sYQ4).
+
 ## Referensi
 
 - [1] [programmer zaman now](https://www.youtube.com/watch?v=xYBclb-sYQ4)
