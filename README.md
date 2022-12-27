@@ -1624,6 +1624,49 @@ ALTER	TABLE	wishlist
 	DROP CONSTRAINT fk_wishlist_product;
 ```
 
+#### Keuntungan Menggunakan Foreign Key
+
+Berikut beberapa keuntungan saat menggunakan foreign key [[1]](https://www.youtube.com/watch?v=xYBclb-sYQ4):
+
+- Foreign key memastikan bahwa data yang kita masukkan ke kolom tersebut harus tersedia di tabel reference nya. Untuk memahaminya kita langsung bahas di contoh, misalnya kita gunakan table contoh di atas (table wishlist) saat kita coba inputkan data berikut:
+  ```
+  INSERT	INTO	wishlist(id_product, description)
+  VALUES(1, 'Makanan Kesukaan');
+  ```
+  Maka data berhasil diinputkan, karena data id_product yang diinputkan (1) ada di table products. Tetapi jika kita menginputkan data berikut:
+  ```
+  INSERT INTO wishlist(id_product, description)
+    VALUES('salah', 'Makanan Kesukaan');
+  ```
+  Hasilnya error, karena di table product tidak ada column id product yang bernilai 'salah'.
+- Selain itu saat kita menghapus data di tabel reference, MySQL akan mengecek apakah id nya digunakan di foreign key di tabel lain, jika digunakan maka secara otomatis MySQL akan menolak proses delete data di tabel reference tersebut. Misalnya kita ingin menghapus dat product yang telah diinputkan sebagai FOREIGN KEY di table wishlist:
+  ```
+  DELETE FROM products WHERE id = 1;
+  ```
+  Hasilnya akan error, karena baris data di table products dengan id = 1 telah dijadikan FOREIGN KEY di table wishlist.
+
+#### Behavior FOREIGN KEY
+
+Seperti yang sebelumnya dibahas, ketika kita menghapus data yang berelasi, maka secara otomatis MySQL akan menolak operasi delete tersebut karena defaultnya memang akan ditolak (RESTRICT). Kita bisa mengubah fitur ini jika kita mau, berikut behavior dari FOREIGN KEY [[1]](https://www.youtube.com/watch?v=xYBclb-sYQ4):
+
+| Behavior  | ON DELETE         | ON UPDATE             |
+| --------- | ----------------- | --------------------- |
+| RESTRICT  | Ditolak           | Ditolak               |
+| CASCADE   | Data akan dihapus | Data akan ikut diubah |
+| NO ACTION | Data dibiarkan    | Data dibiarkan        |
+| SET NULL  | Diubah jadi NULL  | Diubah jadi NULL      |
+
+Berikut contoh penggunaannya:
+
+```
+ALTER	TABLE		wishlist
+	ADD	CONSTRAINT	fk_wishlist_product
+		FOREIGN KEY(id_product)	REFERENCES	products(id)
+			ON DELETE CASCADE	ON UPDATE	CASCADE;
+```
+
+Sehingga dengan CASCADE pada code di atas membuat kita bisa menghapus dan mengaupdate value colmn yang dijadikan references untuk FORE columnIGN KEY (di contoh column id pada table (di contoh id_product) products). tetapi kita harus ingat saat kita menghapus value column tersebut maka value column yang dijadikan FOREIGN KEY tersebut (di contoh id_product) juga akan ikut terhapus.
+
 ## Referensi
 
 - [1] [programmer zaman now](https://www.youtube.com/watch?v=xYBclb-sYQ4)
