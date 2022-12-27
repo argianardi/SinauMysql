@@ -1709,10 +1709,10 @@ Sehingga hasilnya akan tampak seperti ini:
 Kita juga bisa menambahkan alias untuk merubah nama columnya:
 
 ```
-SELECT	w.id			AS	id_wishlist,
-		p.id			AS	id_product,
-		p.name			AS	product_name,
-		w.description	AS	wishlist_description
+SELECT	w.id			    AS	id_wishlist,
+		    p.id			    AS	id_product,
+		    p.name			  AS	product_name,
+		    w.description	AS	wishlist_description
 FROM	wishlist		AS	w
 		JOIN products	AS	p ON(w.id_product = p.id);
 ```
