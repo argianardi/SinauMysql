@@ -1697,7 +1697,7 @@ Terlihat hasilnya ditampilkan semua data-data value dari column yang ada di tabl
 
 ```
 SELECT wishlist.id, products.id, products.name, wishlist.description
-	FROM wishlist JOIN products ON(wishlist.id_product = products.id);
+  FROM wishlist JOIN products ON(wishlist.id_product = products.id);
 ```
 
 Sehingga hasilnya akan tampak seperti ini:
@@ -1713,8 +1713,8 @@ SELECT w.id           AS  id_wishlist,
        p.id           AS  id_product,
        p.name         AS  product_name,
        w.description  AS  wishlist_description
-FROM	wishlist		AS	w
-		JOIN products	AS	p ON(w.id_product = p.id);
+FROM   wishlist       AS  w
+JOIN   products       AS  p ON(w.id_product = p.id);
 ```
 
 Sehingga hasilnya nanti akan tampak seperti ini:
@@ -1731,9 +1731,9 @@ Kita masih menggunakan contoh diatas, menggunakan table `wishlist` tadi. Sebelum
 
   ```
   CREATE TABLE customers (
-    id          int	NOT	NULL	AUTO_INCREMENT	PRIMARY	KEY,
-    email       varchar(100)	NOT NULL,
-    first_name  varchar(100)	NOT	NULL,
+    id          int           NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    email       varchar(100)  NOT NULL,
+    first_name  varchar(100)  NOT NULL,
     last_name   varchar(100),
     UNIQUE KEY  email_unique(email)
   );
@@ -1823,6 +1823,93 @@ Hasilnya akan tampak seperti ini:
   <img src='img/tableOneToOne2.png' alt='table one to one 2'>
 </p>
 
+## One TO Many Relationship
+
+One to many relationship adalah relasi antar tabel dimana satu data bisa digunakan lebih dari satu kali di tabel relasinya. Berbeda dengan one to one yang cuma bisa digunakan maksimal 1 kali di tabel relasinya, one to many tidak ada batasan berapa banyak data digunakan. Contoh relasi antar tabel categories dan products, dimana satu category bisa digunakan oleh lebih dari satu product, yang artinya relasinya nya one category to many products. Pembuatan relasi one to many sebenarnya sama dengan one to one, yang membedakan adalah kita tidak perlu menggunakan `UNIQUE KEY`, karena datanya memang bisa berkali-kali ditambahkan di tabel relasi nya [[1]](https://www.youtube.com/watch?v=xYBclb-sYQ4).
+
+Untuk memahaminya kita bahas contoh relasi table `categories` dan `products`. Pertama kita harus buat table `categories` dulu:
+
+```
+CREATE TABLE categories (
+   id    int           NOT NULL  AUTO_INCREMENT  PRIMARY KEY,
+   name  varchar(100)  NOT NULL
+);
+```
+
+Kemudian lakukan `INSERT` data ke table `categories`:
+
+```
+INSERT INTO categories(name)
+VALUES('Makanan'),
+      ('Minuman'),
+      ('Lain-Lain');
+
+SELECT * FROM categories;
+```
+
+Sehingga hasilnya akan seperti ini:
+
+<p align='center'>
+  <img src='img/tableOneToMany1.png' alt='table one to many 1'>
+</p>
+
+Selanjutnya buat table `products`, karena sebelumnya kita sudah membuat table `products` maka kita hanya perlu mengubahnya saja:
+
+- Hapus column `category`
+- Menambahkan column `id_category`
+- Menambahkan FOREIGN KEY ke column `id_category` dengan reference ke column `id` di table `categories`
+
+```
+ALTER TABLE products
+ DROP COLUMN category;
+
+ALTER TABLE products
+  ADD COLUMN id_category int;
+
+ALTER TABLE      products
+  ADD CONSTRAINT fk_products_categories
+      FOREIGN KEY(id_category)  REFERENCES categories(id);
+
+SHOW CREATE TABLE products;
+```
+
+Lakukan `UPDATE` pada table `products` tepatnya di column `id_category`, jika productnya makanan maka ubah value column `id_category` menjadi 1. Jika productnya minuman ubah value column `id_category` menjadi 2 dan jika productnya bukan makanan atau minuman maka ubah value column `id_category` menjadi 3.
+
+```
+UPDATE products
+SET    id_category = 1
+WHERE  id IN(1, 2, 3, 4, 5, 6, 7, 9, 13, 14, 16, 17, 18);
+
+UPDATE products
+SET    id_category = 2
+WHERE  id IN(10, 11, 12);
+
+UPDATE products
+SET    id_category = 3
+WHERE  id IN(15);
+
+SELECT * FROM products ;
+```
+
+Maka hasilnya akan seperti ini:
+
+<p align='center'>
+  <img src='img/tableOneToMany2.png' alt='table one to many 2'/>
+</p>
+
+Setelah itu baru kita bisa lihat hasil `JOIN` relasi table `products` dan `customers`
+
+```
+SELECT products.id, products.name, categories.name
+FROM   products
+JOIN   categories ON(categories.id = products.id_category);
+```
+
+Hasilnya akan tampak seperti ini:
+
+<p align='center'>
+  <img src='img/tableOneToMany3.png' alt='table one to many 3'/>
+</p>
 ## Referensi
 
 - [1] [programmer zaman now](https://www.youtube.com/watch?v=xYBclb-sYQ4)
