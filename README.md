@@ -1720,7 +1720,7 @@ FROM	wishlist		AS	w
 Sehingga hasilnya nanti akan tampak seperti ini:
 
 <p align='center'>
-  <img src='' alt='table join 3'/>
+  <img src='img/tableJoin3.png' alt='table join 3'/>
 </p>
 
 ## Referensi
