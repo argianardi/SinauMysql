@@ -1807,7 +1807,7 @@ SELECT * FROM wallet;
 Dengan code di atas kita melakukan `INSERT` di table `wallet` tetapi hanya value untuk column `id_costumer`, untuk column `id` sudah `AUTO_INCREMENT` dan column `balance` mengikuti nilai defautnya. Sehingga hasilnya akan seperti ini:
 
 <p align='center'>
-  <img src='' alt='table one to one 1'/>
+  <img src='img/tableOneToOne1.png' alt='table one to one 1'/>
 </p>
 
 Untuk melihat hasil `JOIN` relasi table `wallet` dan `customers` ini dapat dilakukan dengan code:
@@ -1820,7 +1820,7 @@ FROM   wallet  JOIN  customers  ON(wallet.id_customer = customers.id);
 Hasilnya akan tampak seperti ini:
 
 <p align='center'>
-  <img src='' alt='table one to one 2'>
+  <img src='img/tableOneToOne2.png' alt='table one to one 2'>
 </p>
 
 ## Referensi
