@@ -1608,6 +1608,22 @@ ALTER TABLE       wishlist
     FOREIGN KEY(id_product) REFERENCES products(id);
 ```
 
+#### Menghapus FOREIGN KEY
+
+Kita dapat menghapus FOREIGN KEY menggunakan ALTER TABLE, dengan format code berikut:
+
+```
+ALTER TABLE nama_table
+  DROP CONSTRAINT nama_foreign_key;
+```
+
+Berikut contohnya:
+
+```
+ALTER	TABLE	wishlist
+	DROP CONSTRAINT fk_wishlist_product;
+```
+
 ## Referensi
 
 - [1] [programmer zaman now](https://www.youtube.com/watch?v=xYBclb-sYQ4)
