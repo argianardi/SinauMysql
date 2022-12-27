@@ -1554,6 +1554,60 @@ Setelah kita membuat FULLTEXT pada table kita biasa menerapkan Mode FULLTEXT unt
 
 Dalam Relational DBMS (Data Base Management System), salah satu fitur andalan nya adalah table relationship, yaitu relasi antar tabel. Dengan ini kita bisa melakukan relasi dari satu tabel ke tabel lain. Dalam kehidupan nyata pun pasti kita akan sering membuat relasi antar tabel. Misal, saat kita membuat aplikasi penjualan, di laporan penjualan pasti ada data barang. Jika di tabel artinya tabel penjualan akan berelasi dengan tabel barang. Misal dalam aplikasi kampus, tabel mahasiswa akan berelasi dengan tabel mata kuliah, dan tabel dosen [[1]](https://www.youtube.com/watch?v=xYBclb-sYQ4).
 
+### Foreign Key
+
+Saat membuat relasi tabel, biasanya kita akan membuat sebuah kolom sebagai referensi ke tabel lainnya. Misal saat kita membuat tabel penjualan, di dalam tabel penjualan kita akan menambahkan kolom id_produk sebagai referensi ke tabel produk, yang berisi primary key di tabel produk. Kolom referensi ini di MySQL dinamakan Foreign Key. Kita bisa menambah satu atau lebih foreign key ke dalam sebuah tabel. Perlu diperhatikan dalam membuat foreign key, tipe data column foreign key yang kita buat harus sama dengan tipe data column primary key yang kita jadikan reference [[1]](https://www.youtube.com/watch?v=xYBclb-sYQ4).
+
+#### Membuat FOREIGN KEY Menggunakan CREATE TABLE
+
+Contohnya kita akan membuat relasi antara table wish list (tempat produk favorit yang sudah kamu tandai dikumpulkan) dengan table product. Maka di dalam table wish list kita bisa menambahkan foreign key. Foreign key dibuat di column id_product dengan merujuk ke column id di table products:
+
+```
+CREATE TABLE wishlist (
+	id			int	NOT NULL	AUTO_INCREMENT	PRIMARY KEY,
+	id_product	int	NOT NULL,
+	description	text,
+	CONSTRAINT	fk_wishlist_product
+		FOREIGN KEY(id_product)	REFERENCES		products(id)
+);
+
+SHOW CREATE TABLE wishlist ;
+```
+
+Di contoh code di atas bagian untuk membuat foreign key terletak di bagian CONSTRAINT, yaitu di code:
+
+```
+CONSTRAINT	fk_wishlist_product
+		FOREIGN KEY(id_product)	REFERENCES		products(id)
+```
+
+Jadi FOREIGN KEY dapat dibuat dengan format code berikut:
+
+```
+CONSTRAINT nama_foreign_key
+  FOREIGN KEY(nama_column_yang_dijadikan_foreign_key) REFERENCES nama_table_reference(column_reference)
+```
+
+<small> <i><b>NOTE </b> nama FOREIGN KEY bebas, tetapi bagusnya dibuat dengan format: <br>`fk_nama_table1_nama_table2`</i></small>
+
+#### Membuat FOREIGN KEY Menggunakan ALTER TABLE
+
+Kita bisa membuat FOREIGN KEY pada column dan table yang sudah kita buat sebelumnya menggunakan ALTER TABLE dengan format code berikut:
+
+```
+ALTER TABLE nama_table
+  ADD CONSTRAINT nama_foreign_key
+    FOREIGN KEY(nama_column_yang_dijadikan_foreign_key) REFERENCES nama_table_reference(column_reference);
+```
+
+Berikut contohnya:
+
+```
+ALTER TABLE       wishlist
+  ADD CONSTRAINT  fk_wishlist_products
+    FOREIGN KEY(id_product) REFERENCES products(id);
+```
+
 ## Referensi
 
 - [1] [programmer zaman now](https://www.youtube.com/watch?v=xYBclb-sYQ4)
