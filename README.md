@@ -1705,6 +1705,24 @@ Sehingga hasilnya akan tampak seperti ini:
 <p align='center'>
   <img src='img/tableJoin2.png' alt='table join 2'>
 </p>
+
+Kita juga bisa menambahkan alias untuk merubah nama columnya:
+
+```
+SELECT	w.id			AS	id_wishlist,
+		p.id			AS	id_product,
+		p.name			AS	product_name,
+		w.description	AS	wishlist_description
+FROM	wishlist		AS	w
+		JOIN products	AS	p ON(w.id_product = p.id);
+```
+
+Sehingga hasilnya nanti akan tampak seperti ini:
+
+<p align='center'>
+  <img src='' alt='table join 3'/>
+</p>
+
 ## Referensi
 
 - [1] [programmer zaman now](https://www.youtube.com/watch?v=xYBclb-sYQ4)
