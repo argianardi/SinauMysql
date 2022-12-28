@@ -1910,6 +1910,122 @@ Hasilnya akan tampak seperti ini:
 <p align='center'>
   <img src='img/tableOneToMany3.png' alt='table one to many 3'/>
 </p>
+
+## Many TO Many Relationship
+
+Many to Many adalah relasi dimana ada relasi antara 2 table di mana table pertama bisa punya banyak relasi di table kedua, dan table kedua pun punya banyak relasi di table pertama. Ini memang sedikit membingungkan, bagaimana caranya bisa relasi kebanyakan secara bolak balik, sedangkan di table kita cuma punya 1 kolom?. Contoh relasi many to many adalah relasi antara `products` dan `orders`, dimana setiap `product` bisa dijual berkali kali, dan setiap penjualan bisa untuk lebih dari satu produk [[1]](https://www.youtube.com/watch?v=xYBclb-sYQ4).
+
+### Id Product di Tabel Orders
+
+Jika kita menambahkan `id_product` di table `orders`, artinya sekarang sudah benar bahwa 1 product bisa dijual berkali-kali.
+Namun masalahnya 1 order hanya bisa membeli 1 product, karena cuma ada 1 kolom untuk id_product. Oke kalo gitu kita tambahkan id_product1, id_product2, dan seterusnya. Solusi ini bisa dilakukan, tapi tidak baik karena akan selalu ada maksimal barang yang bisa kita beli dalam satu order [[1]](https://www.youtube.com/watch?v=xYBclb-sYQ4).
+
+### id Order di Table Product
+
+Jika kita tambahkan `id_order` di table `products`, artinya sekarang sudah benar 1 order bisa membeli lebih dari 1 product. Tapi sayangnya masalahnya terbalik sekarang, 1 product cuma bisa dijual satu kali, tidak bisa dijual berkali-kali karena kolom `id_order` nya cuma 1. Kalaupun kita tambah id_order1, id_order2 dan seterusnya di table `product`, tetap ada batasan maksimal nya [[1]](https://www.youtube.com/watch?v=xYBclb-sYQ4).
+
+### Membuat Table Relasi
+
+Solusi yang biasa dilakukan jika terjadi relasi many to many adalah menambah 1 tabel ditengahnya. Tabel ini bertugas sebagai jembatan untuk menggabungkan relasi many to many. Isi table ini akan ada id dari table pertama dan table kedua, dalam kasus ini adalah `id_product` dan `id_order`. Dengan demikian, kita bisa menambahkan beberapa data ke dalam tabel relasi ini, sehingga berarti satu product bisa dijual beberapa kali di dalam table `orders`, dan satu order bisa membeli lebih dari satu product [[1]](https://www.youtube.com/watch?v=xYBclb-sYQ4). Sekarang kita akan implementasikan contoh relasi many to many untuk table `orders` dan table `porducts`. Kita akan menggunakan table `products` yang sudah kita buat sebelumnya. Berikut langkah - langkahnya:
+
+- Pertama kita buat table `orders`
+
+  ```
+  CREATE TABLE orders (
+   id          int       NOT NULL  AUTO_INCREMENT  PRIMARY KEY,
+   total       int       NOT NULL,
+   order_date  DATETIME  NOT NULL  default         CURRENT_TIMESTAMP
+  );
+
+  DESC orders;
+  ```
+
+- Selanjutnya kita buat table `orders_products`, yaitu table table yang akan menjadi penghubung untuk relasi many to many antara table `orders` dan table `products`. Di dalam table ini harus berisi column untuk menampung id kedua table, yaitu id order dan id product. Dan kedua column tersebut harus dijadikan `PRIMARY KEY`.
+
+  ```
+  CREATE TABlE orders_products(
+    id_product  int  NOT NULL,
+    id_order    int  NOT NULL,
+    price       int  NOT NULL,
+    quantity    int  NOT NULL,
+    PRIMARY KEY(id_product, id_order)
+  );
+
+  DESC orders_products;
+  ```
+
+- Kemudian buat `FOREIGN KEY` untuk column `id_product` yang reference ke table `product` di column `id` dan `FOREIGN KEY` satu lagi untuk column id di table `orders`.
+
+  ```
+  ALTER TABLE      orders_products
+  ADD   CONSTRAINT fk_orders_products_product
+  FOREIGN KEY(id_product)  REFERENCES products(id);
+
+  ALTER TABLE      orders_products
+  ADD   CONSTRAINT fk_orders_products_order
+  FOREIGN KEY(id_order)  REFERENCES orders(id);
+
+  SHOW CREATE TABLE orders_products;
+  ```
+
+- Sekarang kita telah berhasil membuat realasi many to many, selanjutnya kita akan coba melakukan `INSERT` di table `orders`
+
+  ```
+  INSERT INTO orders(total) VALUES(50), (49), (48);
+  SELECT * FROM orders;
+  ```
+
+  Maka hasilnya akan tampak seperti ini:
+  <p align='center'>
+    <img src='img/tableManyToMany1.png' alt='table many to many 1'>
+  </p>
+
+- Selanjutnya kita lakukan `INSERT` data untuk table `orders_products` yang terdiri dari column `id_product`, `id_order`, `price` dan `quantity`.
+
+  ```
+  INSERT INTO orders_products(id_product, id_order, price, quantity)
+  VALUES(1, 1, 2500, 3),
+      (2, 1, 3000, 4);
+
+  INSERT INTO orders_products(id_product, id_order, price, quantity)
+  VALUES(3, 2, 1500, 10),
+      (3, 3, 5000, 15);
+
+  INSERT INTO orders_products(id_product, id_order, price, quantity)
+  VALUES(3, 1, 1000, 20);
+
+  SELECT * FROM orders_products;
+  ```
+
+  Sehingga hasilnya akan tampak seperti ini:
+  <p align='center'>
+    <img src='img/tableManyToMany2.png' alt='table many to many 2'>
+  </p>
+
+  Terlihat fenomena relasi many to many di mana 1 product bisa dijual berkali - kali di beberapa order, product dengan id = 3 bisa digunakan lebih dari 1 kali yaitu untuk order dengan id = 1, 2 dan 3. Hal yang sama juga terjadi pada order yang bisa digunakan untuk membeli lebih dari satu product, order dengan id = 1 bisa digunakan untuk product dengan id = 1, 2 dan 3.
+
+- Kita bisa melihat hasil relasi dari ketiga table tersebut
+
+  ```
+  SELECT * FROM orders
+  JOIN orders_products ON(orders_products.id_order = orders.id)
+  JOIN products ON(products.id = orders_products.id_product);
+  ```
+
+  Hasilnya nanti akan tampil semua data ketiga table denga urutan column dari column - column di table `orders` kemudian column - column di table `orders_products` dan terakhir column - column yang ada di table `products`.
+
+  Kita juga bisa memilih column apa saja yang akan ditampilkan
+
+  ```
+   SELECT orders.id, products.id, orders_products.quantity, orders_products.price FROM orders
+   JOIN   orders_products ON(orders_products.id_order = orders.id )
+   JOIN   products        ON(products.id = orders_products.id_product);
+  ```
+
+  <p align='center'>
+    <img src='img/tableManyToMany3.png' alt='table many to many 3'>
+  </p>
+
 ## Referensi
 
 - [1] [programmer zaman now](https://www.youtube.com/watch?v=xYBclb-sYQ4)
